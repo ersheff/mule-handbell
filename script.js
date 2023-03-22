@@ -10,8 +10,8 @@ function startAccel(){
     if (response === "granted") {
       window.addEventListener("devicemotion", (event) => {
         xOutput.innerText = `x: ${Math.floor(event.acceleration.x*100)}`;
-        yOutput.innerText = `y: ${Math.floor(event.acceleration.x*100)}`;
-        zOutput.innerText = `z: ${Math.floor(event.acceleration.x*100)}`;
+        yOutput.innerText = `y: ${Math.floor(event.acceleration.y*100)}`;
+        zOutput.innerText = `z: ${Math.floor(event.acceleration.z*100)}`;
       });
     }
   });
