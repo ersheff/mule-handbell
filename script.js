@@ -9,7 +9,7 @@ function startAccel(){
     if (response === "granted") {
       let lastZ = 0;
       let smoothZ = 0;
-      let threshold = 1;
+      let threshold = 5;
       window.addEventListener("devicemotion", (event) => {
         let z = event.acceleration.z;
         smoothZ = (lastZ*0.85)+(z*0.15);
