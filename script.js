@@ -8,10 +8,14 @@ document.addEventListener("click", startAccel);
 function startAccel(){
   DeviceMotionEvent.requestPermission().then(response => {
     if (response === "granted") {
+      let lastZ = 0;
+      let threshold = 50;
       window.addEventListener("devicemotion", (event) => {
-        xOutput.innerText = `x: ${Math.floor(event.acceleration.x*100)}`;
-        yOutput.innerText = `y: ${Math.floor(event.acceleration.y*100)}`;
-        zOutput.innerText = `z: ${Math.floor(event.acceleration.z*100)}`;
+        let z = event.acceleration.z;
+        if (z - lastZ > threshold) {
+          document.body.style.backgroundColor = "red";
+        }
+        else document.body.style.backgroundColor = "white";
       });
     }
   });
