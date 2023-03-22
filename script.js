@@ -2,7 +2,7 @@ let zThreshold = document.getElementById("z-threshold");
 let zThresholdOutput = document.getElementById("z-threshold-output");
 let zValue = document.getElementById("z-value");
 
-let accelPerm = document.getElementById("accel-perm");
+let startButton = document.getElementById("start-button");
 
 let zThresh = 0;
 let debounceTimer = 0;
@@ -12,10 +12,40 @@ zThreshold.addEventListener("input", () => {
   zThresholdOutput.innerText = zThresh;
 })
 
-accelPerm.addEventListener("click", startAccel);
+startButton.addEventListener("click", async () => {
+  
+  await Tone.start();
 
+  const polySynth = new Tone.PolySynth({
+    voice: Tone.MonoSynth
+  });
 
-function startAccel(){
+  polySynth.set({
+    oscillator: {
+      type: "fatsawtooth",
+      spread: 0.1
+    },
+    envelope: {
+      attack: 0,
+      decay: 1,
+      sustain: 0,
+      release: 0
+    },
+    filter: {
+      rolloff: -12
+    },
+    filterEnvelope: {
+      attack: 0,
+      decay: 1,
+      sustain: 0,
+      release: 0,
+      baseFrequency: 1000,
+      octaves: 1
+    }
+  });
+
+  polySynth.toDestination();
+
   DeviceMotionEvent.requestPermission().then(response => {
     if (response === "granted") {
 
@@ -31,6 +61,7 @@ function startAccel(){
           let zDiff = z - smoothZ;
           if (zDiff > zThresh && debounceTimer <= 0) {
             document.body.style.backgroundColor = "red";
+            polySynth.triggerAttackRelease(60, 1, Tone.immediate(), 1);
             debounceTimer = 30;
           }
           else document.body.style.backgroundColor = "white";
@@ -44,4 +75,5 @@ function startAccel(){
       });
     }
   });
-}
+
+});
