@@ -1,3 +1,12 @@
+const oscWebSocket = new osc.WebSocketPort({
+  url: "ws://localhost:8001",
+  metadata: true
+});
+
+oscWebSocket.on("ready", () => {
+  console.log("hi!");
+});
+
 let zThreshold = document.getElementById("z-threshold");
 let zThresholdOutput = document.getElementById("z-threshold-output");
 let zValue = document.getElementById("z-value");
