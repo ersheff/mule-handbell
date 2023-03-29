@@ -5,7 +5,7 @@ let zValue = document.getElementById("z-value");
 let startButton = document.getElementById("start-button");
 
 let zThresh = 0;
-let debounceTimer = 0;
+let debounceTimer = 20;
 
 zThreshold.addEventListener("input", () => {
   zThresh = zThreshold.value;
@@ -54,19 +54,17 @@ startButton.addEventListener("click", async () => {
 
       window.addEventListener("devicemotion", (event) => {
         let z = event.acceleration.z*10;
+        smoothZ = (lastZ*0.75)+(z*0.25);
+        zValue.value = smoothZ;
+        let zDiff = z - smoothZ;
 
-        if (z > 0) {
-          smoothZ = (lastZ*0.75)+(z*0.25);
-          zValue.value = smoothZ;
-          let zDiff = z - smoothZ;
-          if (zDiff > zThresh && debounceTimer <= 0) {
-            document.body.style.backgroundColor = "red";
-            polySynth.triggerAttackRelease(60, 1, Tone.immediate(), 1);
-            debounceTimer = 30;
-          }
-          else document.body.style.backgroundColor = "white";
-          lastZ = smoothZ;
+        if (zDiff > zThresh && debounceTimer <= 0) {
+          document.body.style.backgroundColor = "red";
+          polySynth.triggerAttackRelease(60, 1, Tone.immediate(), 1);
+          debounceTimer = 20;
         }
+        else document.body.style.backgroundColor = "white";
+        lastZ = smoothZ;
 
         if (debounceTimer-- <= 0) {
           debounceTimer = 0;
