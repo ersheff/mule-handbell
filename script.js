@@ -4,7 +4,7 @@ let zDiffOutput = document.getElementById("z-diff-output");
 let startButton = document.getElementById("start-button");
 
 let pitchRadios = document.getElementById("pitch-radios");
-let pitch = 60;
+let pitch = "C4";
 
 let smoothZ = 0;
 let zThresh = 2;
