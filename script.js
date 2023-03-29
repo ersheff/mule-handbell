@@ -32,7 +32,7 @@ startButton.addEventListener("click", async () => {
 
         if (zDiff > zThresh && debounceTimer <= 0) {
           document.body.style.backgroundColor = "red";
-          polySynth.triggerAttackRelease([pitch], [4,3], Tone.immediate());
+          polySynth.triggerAttackRelease(pitch, 2, Tone.immediate());
           debounceTimer = 30;
         }
 
@@ -58,7 +58,7 @@ startButton.addEventListener("click", async () => {
     },
     envelope: {
       attack: 0,
-      decay: 1,
+      decay: 2,
       sustain: 0,
       release: 0
     },
@@ -67,10 +67,10 @@ startButton.addEventListener("click", async () => {
     },
     filterEnvelope: {
       attack: 0,
-      decay: 1,
+      decay: 2,
       sustain: 0,
       release: 0,
-      baseFrequency: 1000,
+      baseFrequency: 800,
       octaves: 1
     }
   });
