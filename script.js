@@ -2,20 +2,19 @@ let zThreshold = document.getElementById("z-threshold");
 let zThresholdOutput = document.getElementById("z-threshold-output");
 let zValue = document.getElementById("z-value");
 
-let startAccel = document.getElementById("start-accel");
-let startAudio = document.getElementById("start-audio");
+let startButton = document.getElementById("start-button");
 
 let zThresh = 0;
 let debounceTimer = 20;
+
+let audioReady = false;
 
 zThreshold.addEventListener("input", () => {
   zThresh = zThreshold.value;
   zThresholdOutput.innerText = zThresh;
 })
 
-startAudio.addEventListener("click", playSynth);
-
-function playSynth() {
+startButton.addEventListener("click", async () => {
   
   DeviceMotionEvent.requestPermission().then(response => {
     if (response === "granted") {
@@ -44,11 +43,7 @@ function playSynth() {
       });
     }
   });
-}
 
-
-startAccel.addEventListener("click", async () => {
-  
   await Tone.start();
 
   const polySynth = new Tone.PolySynth({
