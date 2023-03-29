@@ -13,7 +13,10 @@ zThreshold.addEventListener("input", () => {
   zThresholdOutput.innerText = zThresh;
 })
 
-startAudio.addEventListener("click", () => {
+startAudio.addEventListener("click", playSynth);
+
+function playSynth() {
+  
   DeviceMotionEvent.requestPermission().then(response => {
     if (response === "granted") {
 
@@ -41,7 +44,7 @@ startAudio.addEventListener("click", () => {
       });
     }
   });
-})
+}
 
 
 startAccel.addEventListener("click", async () => {
