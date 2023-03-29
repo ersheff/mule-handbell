@@ -32,7 +32,7 @@ startButton.addEventListener("click", async () => {
 
         if (zDiff > zThresh && debounceTimer <= 0) {
           document.body.style.backgroundColor = "red";
-          polySynth.triggerAttackRelease(pitch, 1, Tone.immediate(), 1);
+          polySynth.triggerAttackRelease(pitch, 2, Tone.immediate(), 1);
           debounceTimer = 30;
         }
 
