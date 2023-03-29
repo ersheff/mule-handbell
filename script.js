@@ -18,32 +18,57 @@ startButton.addEventListener("click", async () => {
 
   startButton.style.display = "none";
 
-  DeviceMotionEvent.requestPermission().then(response => {
-    if (response === "granted") {
+  if (typeof DeviceMotionEvent.requestPermission === "function") {
+    DeviceMotionEvent.requestPermission().then(response => {
+      if (response === "granted") {
 
-      window.addEventListener("devicemotion", (event) => {
-        let z = Math.abs(event.acceleration.z);
-        let lastZ = smoothZ;
-        smoothZ = (lastZ*0.75)+(z*0.25);
-        zSmoothOutput.innerText = smoothZ.toFixed(2);
+        window.addEventListener("devicemotion", (event) => {
+          let z = Math.abs(event.acceleration.z);
+          let lastZ = smoothZ;
+          smoothZ = (lastZ*0.75)+(z*0.25);
+          zSmoothOutput.innerText = smoothZ.toFixed(2);
 
-        let zDiff = smoothZ-lastZ;
-        zDiffOutput.innerText = zDiff.toFixed(2);
+          let zDiff = smoothZ-lastZ;
+          zDiffOutput.innerText = zDiff.toFixed(2);
 
-        if (zDiff > zThresh && debounceTimer <= 0) {
-          document.body.style.backgroundColor = "red";
-          polySynth.triggerAttackRelease(pitch, 2, Tone.immediate());
-          debounceTimer = 30;
-        }
+          if (zDiff > zThresh && debounceTimer <= 0) {
+            document.body.style.backgroundColor = "red";
+            polySynth.triggerAttackRelease(pitch, 2, Tone.immediate());
+            debounceTimer = 30;
+          }
 
-        if (debounceTimer-- <= 0) {
-          debounceTimer = 0;
-          document.body.style.backgroundColor = "black";
-        }
+          if (debounceTimer-- <= 0) {
+            debounceTimer = 0;
+            document.body.style.backgroundColor = "black";
+          }
 
-      });
-    }
-  });
+        });
+      }
+    });
+  }
+  else {
+    window.addEventListener("devicemotion", (event) => {
+      let z = Math.abs(event.acceleration.z);
+      let lastZ = smoothZ;
+      smoothZ = (lastZ*0.75)+(z*0.25);
+      zSmoothOutput.innerText = smoothZ.toFixed(2);
+
+      let zDiff = smoothZ-lastZ;
+      zDiffOutput.innerText = zDiff.toFixed(2);
+
+      if (zDiff > zThresh && debounceTimer <= 0) {
+        document.body.style.backgroundColor = "red";
+        polySynth.triggerAttackRelease(pitch, 2, Tone.immediate());
+        debounceTimer = 30;
+      }
+
+      if (debounceTimer-- <= 0) {
+        debounceTimer = 0;
+        document.body.style.backgroundColor = "black";
+      }
+
+    });
+  }
 
   await Tone.start();
 
