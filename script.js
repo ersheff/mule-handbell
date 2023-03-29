@@ -4,10 +4,9 @@ let zValue = document.getElementById("z-value");
 
 let startButton = document.getElementById("start-button");
 
+let smoothZ = 0;
 let zThresh = 0;
-let debounceTimer = 20;
-
-let audioReady = false;
+let debounceTimer = 30;
 
 zThreshold.addEventListener("input", () => {
   zThresh = zThreshold.value;
@@ -15,18 +14,16 @@ zThreshold.addEventListener("input", () => {
 })
 
 startButton.addEventListener("click", async () => {
-  
+
   DeviceMotionEvent.requestPermission().then(response => {
     if (response === "granted") {
 
-      let lastZ = 0;
-      let smoothZ = 0;
-
       window.addEventListener("devicemotion", (event) => {
-        let z = event.acceleration.z*10;
-        smoothZ = (lastZ*0.75)+(z*0.25);
-        zValue.value = smoothZ;
-        let zDiff = z - smoothZ;
+        let z = event.acceleration.z;
+        let lastZ = smoothZ;
+        smoothZ = (lastZ*0.85)+(z*0.15);
+        console.log(smoothZ);
+        let zDiff = smoothZ-lastZ;
 
         if (zDiff > zThresh && debounceTimer <= 0) {
           document.body.style.backgroundColor = "red";
@@ -34,7 +31,6 @@ startButton.addEventListener("click", async () => {
           debounceTimer = 20;
         }
         else document.body.style.backgroundColor = "white";
-        lastZ = smoothZ;
 
         if (debounceTimer-- <= 0) {
           debounceTimer = 0;
