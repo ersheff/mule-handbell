@@ -16,9 +16,9 @@ startButton.addEventListener("click", async () => {
     if (response === "granted") {
 
       window.addEventListener("devicemotion", (event) => {
-        let z = event.acceleration.z;
+        let z = Math.abs(event.acceleration.z);
         let lastZ = smoothZ;
-        smoothZ = (lastZ*0.85)+(z*0.15);
+        smoothZ = (lastZ*0.75)+(z*0.25);
 
         zSmoothSlider.value = smoothZ*10;
         zSmoothOutput.innerText = smoothZ.toFixed(2);
