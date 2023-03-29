@@ -7,7 +7,7 @@ let zDiffOutput = document.getElementById("z-diff-output");
 let startButton = document.getElementById("start-button");
 
 let smoothZ = 0;
-let zThresh = 0.5;
+let zThresh = 0.8;
 let debounceTimer = 30;
 
 startButton.addEventListener("click", async () => {
@@ -18,7 +18,7 @@ startButton.addEventListener("click", async () => {
       window.addEventListener("devicemotion", (event) => {
         let z = event.acceleration.z;
         let lastZ = smoothZ;
-        smoothZ = (lastZ*0.75)+(z*0.25);
+        smoothZ = (lastZ*0.85)+(z*0.15);
 
         zSmoothSlider.value = smoothZ*10;
         zSmoothOutput.innerText = smoothZ.toFixed(2);
