@@ -7,7 +7,7 @@ let zDiffOutput = document.getElementById("z-diff-output");
 let startButton = document.getElementById("start-button");
 
 let smoothZ = 0;
-let zThresh = 0.8;
+let zThresh = 1;
 let debounceTimer = 30;
 
 startButton.addEventListener("click", async () => {
