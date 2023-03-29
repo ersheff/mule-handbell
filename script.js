@@ -2,7 +2,8 @@ let zThreshold = document.getElementById("z-threshold");
 let zThresholdOutput = document.getElementById("z-threshold-output");
 let zValue = document.getElementById("z-value");
 
-let startButton = document.getElementById("start-button");
+let startAccel = document.getElementById("start-accel");
+let startAudio = document.getElementById("start-audio");
 
 let zThresh = 0;
 let debounceTimer = 20;
@@ -12,7 +13,38 @@ zThreshold.addEventListener("input", () => {
   zThresholdOutput.innerText = zThresh;
 })
 
-startButton.addEventListener("click", async () => {
+startAudio.addEventListener("click", () => {
+  DeviceMotionEvent.requestPermission().then(response => {
+    if (response === "granted") {
+
+      let lastZ = 0;
+      let smoothZ = 0;
+
+      window.addEventListener("devicemotion", (event) => {
+        let z = event.acceleration.z*10;
+        smoothZ = (lastZ*0.75)+(z*0.25);
+        zValue.value = smoothZ;
+        let zDiff = z - smoothZ;
+
+        if (zDiff > zThresh && debounceTimer <= 0) {
+          document.body.style.backgroundColor = "red";
+          polySynth.triggerAttackRelease(60, 1, Tone.immediate(), 1);
+          debounceTimer = 20;
+        }
+        else document.body.style.backgroundColor = "white";
+        lastZ = smoothZ;
+
+        if (debounceTimer-- <= 0) {
+          debounceTimer = 0;
+        }
+
+      });
+    }
+  });
+})
+
+
+startAccel.addEventListener("click", async () => {
   
   await Tone.start();
 
@@ -45,33 +77,5 @@ startButton.addEventListener("click", async () => {
   });
 
   polySynth.toDestination();
-
-  DeviceMotionEvent.requestPermission().then(response => {
-    if (response === "granted") {
-
-      let lastZ = 0;
-      let smoothZ = 0;
-
-      window.addEventListener("devicemotion", (event) => {
-        let z = event.acceleration.z*10;
-        smoothZ = (lastZ*0.75)+(z*0.25);
-        zValue.value = smoothZ;
-        let zDiff = z - smoothZ;
-
-        if (zDiff > zThresh && debounceTimer <= 0) {
-          document.body.style.backgroundColor = "red";
-          polySynth.triggerAttackRelease(60, 1, Tone.immediate(), 1);
-          debounceTimer = 20;
-        }
-        else document.body.style.backgroundColor = "white";
-        lastZ = smoothZ;
-
-        if (debounceTimer-- <= 0) {
-          debounceTimer = 0;
-        }
-
-      });
-    }
-  });
 
 });
