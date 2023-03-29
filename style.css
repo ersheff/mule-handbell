@@ -1,6 +1,26 @@
+body {
+  color: grey;
+  background-color: black;
+}
+
+button {
+  background-color: grey;
+}
+
+
 .data-container {
   display: flex;
   gap: 2ch;
+}
+
+.pitch-radios {
+  display: flex;
+  gap: 2ch;
+}
+
+.pitch-column {
+  display: flex;
+  flex-direction: column;
 }
 
 input[type=range] {

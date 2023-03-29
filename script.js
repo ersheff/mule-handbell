@@ -1,16 +1,22 @@
-let zSmoothSlider = document.getElementById("z-smooth-slider");
 let zSmoothOutput = document.getElementById("z-smooth-output");
-
-let zDiffSlider = document.getElementById("z-diff-slider");
 let zDiffOutput = document.getElementById("z-diff-output");
 
 let startButton = document.getElementById("start-button");
 
+let pitchRadios = document.getElementById("pitch-radios");
+let pitch = 60;
+
 let smoothZ = 0;
-let zThresh = 1;
+let zThresh = 2;
 let debounceTimer = 30;
 
+pitchRadios.addEventListener("click", () => {
+  pitch = document.querySelector('input[name="pitches"]:checked').value;
+});
+
 startButton.addEventListener("click", async () => {
+
+  startButton.style.display = "none";
 
   DeviceMotionEvent.requestPermission().then(response => {
     if (response === "granted") {
@@ -19,24 +25,20 @@ startButton.addEventListener("click", async () => {
         let z = Math.abs(event.acceleration.z);
         let lastZ = smoothZ;
         smoothZ = (lastZ*0.75)+(z*0.25);
-
-        zSmoothSlider.value = smoothZ*10;
         zSmoothOutput.innerText = smoothZ.toFixed(2);
 
         let zDiff = smoothZ-lastZ;
-
-        zDiffSlider.value = zDiff*10;
         zDiffOutput.innerText = zDiff.toFixed(2);
 
         if (zDiff > zThresh && debounceTimer <= 0) {
           document.body.style.backgroundColor = "red";
-          polySynth.triggerAttackRelease(60, 1, Tone.immediate(), 1);
+          polySynth.triggerAttackRelease(pitch, 1, Tone.immediate(), 1);
           debounceTimer = 30;
         }
-        else document.body.style.backgroundColor = "white";
 
         if (debounceTimer-- <= 0) {
           debounceTimer = 0;
+          document.body.style.backgroundColor = "black";
         }
 
       });
