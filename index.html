@@ -4,18 +4,31 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
   <script src="Tone_14.8.49.js"></script>
   <script src="script.js" defer></script>
   <title>MULE Handbell</title>
 </head>
 <body>
-  <label>
-    Z threshold: <p id="z-threshold-output"></p>
-    <input type="range" id="z-threshold">
-  </label>
-  <br>
-  <input type="range" id="z-value">
-  <br>
+
+  <div class="data-container">
+    <label>
+      Z Threshold: <p id="z-threshold-output"></p>
+      <input type="range" id="z-threshold-slider" orient="vertical">
+    </label>
+
+    <label>
+      Z Smooth: <p id="z-smooth-output"></p>
+      <input type="range" id="z-smooth-slider" orient="vertical">
+    </label>
+
+    <label>
+      Z Diff: <p id="z-diff-output"></p>
+      <input type="range" id="z-diff-slider" orient="vertical">
+    </label>
+  </div>
+
   <button id="start-button">START</button>
+
 </body>
 </html>

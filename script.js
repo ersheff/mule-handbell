@@ -1,6 +1,11 @@
-let zThreshold = document.getElementById("z-threshold");
+let zThresholdSlider = document.getElementById("z-threshold-slider");
 let zThresholdOutput = document.getElementById("z-threshold-output");
-let zValue = document.getElementById("z-value");
+
+let zSmoothSlider = document.getElementById("z-smooth-slider");
+let zSmoothOutput = document.getElementById("z-smooth-output");
+
+let zDiffSlider = document.getElementById("z-diff-slider");
+let zDiffOutput = document.getElementById("z-diff-output");
 
 let startButton = document.getElementById("start-button");
 
@@ -8,7 +13,7 @@ let smoothZ = 0;
 let zThresh = 0;
 let debounceTimer = 30;
 
-zThreshold.addEventListener("input", () => {
+zThresholdSlider.addEventListener("input", () => {
   zThresh = zThreshold.value;
   zThresholdOutput.innerText = zThresh;
 })
@@ -22,8 +27,14 @@ startButton.addEventListener("click", async () => {
         let z = event.acceleration.z;
         let lastZ = smoothZ;
         smoothZ = (lastZ*0.85)+(z*0.15);
-        console.log(smoothZ);
+
+        zSmoothSlider.value = smoothZ;
+        zSmoothOutput.innerText = smoothZ;
+
         let zDiff = smoothZ-lastZ;
+
+        zDiffSlider.value = zDiff;
+        zDiffOutput.innerText = zDiff;
 
         if (zDiff > zThresh && debounceTimer <= 0) {
           document.body.style.backgroundColor = "red";

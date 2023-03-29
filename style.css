@@ -1,0 +1,8 @@
+.data-container {
+  display: flex;
+  gap: 2ch;
+}
+
+input[type=range] {
+  -webkit-appearance: slider-vertical;
+}
