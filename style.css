@@ -17,6 +17,7 @@ button {
 .pitch-radios {
   display: flex;
   gap: 2ch;
+  font-size: 2rem;
 }
 
 .pitch-column {
