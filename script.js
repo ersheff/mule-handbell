@@ -1,6 +1,3 @@
-let zThresholdSlider = document.getElementById("z-threshold-slider");
-let zThresholdOutput = document.getElementById("z-threshold-output");
-
 let zSmoothSlider = document.getElementById("z-smooth-slider");
 let zSmoothOutput = document.getElementById("z-smooth-output");
 
@@ -10,13 +7,8 @@ let zDiffOutput = document.getElementById("z-diff-output");
 let startButton = document.getElementById("start-button");
 
 let smoothZ = 0;
-let zThresh = 0;
+let zThresh = 0.5;
 let debounceTimer = 30;
-
-zThresholdSlider.addEventListener("input", () => {
-  zThresh = zThresholdSlider.value;
-  zThresholdOutput.innerText = zThresh;
-})
 
 startButton.addEventListener("click", async () => {
 
@@ -26,20 +18,20 @@ startButton.addEventListener("click", async () => {
       window.addEventListener("devicemotion", (event) => {
         let z = event.acceleration.z;
         let lastZ = smoothZ;
-        smoothZ = (lastZ*0.85)+(z*0.15);
+        smoothZ = (lastZ*0.75)+(z*0.25);
 
-        zSmoothSlider.value = smoothZ;
-        zSmoothOutput.innerText = smoothZ;
+        zSmoothSlider.value = smoothZ*10;
+        zSmoothOutput.innerText = smoothZ.toFixed(2);
 
         let zDiff = smoothZ-lastZ;
 
-        zDiffSlider.value = zDiff;
-        zDiffOutput.innerText = zDiff;
+        zDiffSlider.value = zDiff*10;
+        zDiffOutput.innerText = zDiff.toFixed(2);
 
         if (zDiff > zThresh && debounceTimer <= 0) {
           document.body.style.backgroundColor = "red";
           polySynth.triggerAttackRelease(60, 1, Tone.immediate(), 1);
-          debounceTimer = 20;
+          debounceTimer = 30;
         }
         else document.body.style.backgroundColor = "white";
 
