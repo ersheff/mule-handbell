@@ -14,7 +14,7 @@ let zThresh = 0;
 let debounceTimer = 30;
 
 zThresholdSlider.addEventListener("input", () => {
-  zThresh = zThreshold.value;
+  zThresh = zThresholdSlider.value;
   zThresholdOutput.innerText = zThresh;
 })
 
