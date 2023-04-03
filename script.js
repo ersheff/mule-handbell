@@ -39,7 +39,7 @@ startButton.addEventListener("click", async () => {
 
           if (xDiff > xThresh && debounceTimer <= 0) {
             document.body.style.backgroundColor = "red";
-            let octave = Math.floor(Math.random() * 3) + 3;
+            let octave = Math.floor(Math.random() * 2) + 3;
             polySynth.triggerAttackRelease(pitch+octave, length, Tone.immediate());
             debounceTimer = debounceAmount;
           }
@@ -64,6 +64,7 @@ startButton.addEventListener("click", async () => {
 
       if (xDiff > xThresh && debounceTimer <= 0) {
         document.body.style.backgroundColor = "red";
+        let octave = Math.floor(Math.random() * 2) + 3;
         polySynth.triggerAttackRelease(pitch+octave, length, Tone.immediate());
         debounceTimer = debounceAmount;
       }
