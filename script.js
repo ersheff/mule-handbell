@@ -15,7 +15,7 @@ let xThresh = 2.5;
 let debounceTimer = 20;
 let debounceAmount = 20;
 
-const length = 5;
+const length = 4;
 
 pitchRadios.addEventListener("click", () => {
   pitch = notes[document.querySelector('input[name="pitches"]:checked').value];
@@ -88,7 +88,7 @@ startButton.addEventListener("click", async () => {
       type: "triangle3"
     },
     harmonicity: 5.5,
-    modulationIndex: 13,
+    modulationIndex: 8,
     envelope: {
       attack: 0,
       decay: length,
