@@ -1,10 +1,14 @@
+const notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+
+let pitch = notes[0];
+
 let xSmoothOutput = document.getElementById("x-smooth-output");
 let xDiffOutput = document.getElementById("x-diff-output");
 
 let startButton = document.getElementById("start-button");
 
 let pitchRadios = document.getElementById("pitch-radios");
-let pitch = "C4";
+
 
 let smoothX = 0;
 let xThresh = 2.5;
@@ -14,7 +18,7 @@ let debounceAmount = 20;
 const length = 5;
 
 pitchRadios.addEventListener("click", () => {
-  pitch = document.querySelector('input[name="pitches"]:checked').value;
+  pitch = notes[document.querySelector('input[name="pitches"]:checked').value];
 });
 
 startButton.addEventListener("click", async () => {
@@ -35,7 +39,8 @@ startButton.addEventListener("click", async () => {
 
           if (xDiff > xThresh && debounceTimer <= 0) {
             document.body.style.backgroundColor = "red";
-            polySynth.triggerAttackRelease(pitch, length, Tone.immediate());
+            let octave = Math.floor(Math.random() * 3) + 3;
+            polySynth.triggerAttackRelease(pitch+octave, length, Tone.immediate());
             debounceTimer = debounceAmount;
           }
 
@@ -59,7 +64,7 @@ startButton.addEventListener("click", async () => {
 
       if (xDiff > xThresh && debounceTimer <= 0) {
         document.body.style.backgroundColor = "red";
-        polySynth.triggerAttackRelease(pitch, length, Tone.immediate());
+        polySynth.triggerAttackRelease(pitch+octave, length, Tone.immediate());
         debounceTimer = debounceAmount;
       }
 
