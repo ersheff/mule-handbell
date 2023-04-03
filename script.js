@@ -11,6 +11,8 @@ let xThresh = 2.5;
 let debounceTimer = 20;
 let debounceAmount = 20;
 
+const length = 5;
+
 pitchRadios.addEventListener("click", () => {
   pitch = document.querySelector('input[name="pitches"]:checked').value;
 });
@@ -33,7 +35,7 @@ startButton.addEventListener("click", async () => {
 
           if (xDiff > xThresh && debounceTimer <= 0) {
             document.body.style.backgroundColor = "red";
-            polySynth.triggerAttackRelease(pitch, 6, Tone.immediate());
+            polySynth.triggerAttackRelease(pitch, length, Tone.immediate());
             debounceTimer = debounceAmount;
           }
 
@@ -57,7 +59,7 @@ startButton.addEventListener("click", async () => {
 
       if (xDiff > xThresh && debounceTimer <= 0) {
         document.body.style.backgroundColor = "red";
-        polySynth.triggerAttackRelease(pitch, 8, Tone.immediate());
+        polySynth.triggerAttackRelease(pitch, length, Tone.immediate());
         debounceTimer = debounceAmount;
       }
 
@@ -80,16 +82,16 @@ startButton.addEventListener("click", async () => {
       type: "triangle3"
     },
     harmonicity: 5.5,
-    modulationIndex: 15,
+    modulationIndex: 13,
     envelope: {
       attack: 0,
-      decay: 6,
+      decay: length,
       sustain: 0,
       release: 0
     },
     modulationEnvelope: {
       attack: 0,
-      decay: 6,
+      decay: length,
       sustain: 0,
       release: 0
     }
