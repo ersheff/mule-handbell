@@ -9,6 +9,7 @@ let pitch = "C4";
 let smoothX = 0;
 let xThresh = 2.5;
 let debounceTimer = 20;
+let debounceAmount = 20;
 
 pitchRadios.addEventListener("click", () => {
   pitch = document.querySelector('input[name="pitches"]:checked').value;
@@ -32,8 +33,8 @@ startButton.addEventListener("click", async () => {
 
           if (xDiff > xThresh && debounceTimer <= 0) {
             document.body.style.backgroundColor = "red";
-            polySynth.triggerAttackRelease(pitch, 8, Tone.immediate());
-            debounceTimer = 30;
+            polySynth.triggerAttackRelease(pitch, 6, Tone.immediate());
+            debounceTimer = debounceAmount;
           }
 
           if (debounceTimer-- <= 0) {
@@ -57,7 +58,7 @@ startButton.addEventListener("click", async () => {
       if (xDiff > xThresh && debounceTimer <= 0) {
         document.body.style.backgroundColor = "red";
         polySynth.triggerAttackRelease(pitch, 8, Tone.immediate());
-        debounceTimer = 30;
+        debounceTimer = debounceAmount;
       }
 
       if (debounceTimer-- <= 0) {
@@ -82,21 +83,19 @@ startButton.addEventListener("click", async () => {
     modulationIndex: 15,
     envelope: {
       attack: 0,
-      decay: 8,
+      decay: 6,
       sustain: 0,
       release: 0
     },
     modulationEnvelope: {
       attack: 0,
-      decay: 8,
+      decay: 6,
       sustain: 0,
       release: 0
     }
   });
 
   const autoFilter = new Tone.AutoFilter("4n", 5, 2).start();
-
-  autoFilter.depth = 0;
 
   const chorus = new Tone.Chorus(4, 2.4, 0.15).start();
 
