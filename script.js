@@ -140,7 +140,7 @@ startButton.addEventListener("click", async () => {
     modulationIndex: 5,
     envelope : {
       attack: 0.01,
-      decay: length/4,
+      decay: length/6,
       sustain: 0,
       release: 0
     },
