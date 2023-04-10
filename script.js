@@ -41,7 +41,7 @@ startButton.addEventListener("click", async () => {
             metalSynth.triggerAttackRelease(pitch, length, Tone.immediate());
             squareSynth.triggerAttackRelease(pitch, length, Tone.immediate());
             sawSynth.triggerAttackRelease(pitch, length, Tone.immediate());
-            pluckSynth.triggerAttackRelease(pitch, length, Tone.immediate());
+            //pluckSynth.triggerAttackRelease(pitch, length, Tone.immediate());
             debounceTimer = debounceAmount;
             xDiffOutput.innerText = xDiff.toFixed(2);
           }
@@ -69,7 +69,7 @@ startButton.addEventListener("click", async () => {
         metalSynth.triggerAttackRelease(pitch, length, Tone.immediate());
         squareSynth.triggerAttackRelease(pitch, length, Tone.immediate());
         sawSynth.triggerAttackRelease(pitch, length, Tone.immediate());
-        pluckSynth.triggerAttackRelease(pitch, length, Tone.immediate());
+        //pluckSynth.triggerAttackRelease(pitch, length, Tone.immediate());
         debounceTimer = debounceAmount;
         xDiffOutput.innerText = xDiff.toFixed(2);
       }
@@ -88,7 +88,7 @@ startButton.addEventListener("click", async () => {
       metalSynth.triggerAttackRelease(pitch, length, Tone.immediate());
       squareSynth.triggerAttackRelease(pitch, length, Tone.immediate());
       sawSynth.triggerAttackRelease(pitch, length, Tone.immediate());
-      pluckSynth.triggerAttackRelease(pitch, length, Tone.immediate());
+      //pluckSynth.triggerAttackRelease(pitch, length, Tone.immediate());
     });
   }
 
