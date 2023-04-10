@@ -1,25 +1,24 @@
-const notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
-
-let pitch = notes[0];
-
 let xSmoothOutput = document.getElementById("x-smooth-output");
 let xDiffOutput = document.getElementById("x-diff-output");
 
 let startButton = document.getElementById("start-button");
-
-let pitchRadios = document.getElementById("pitch-radios");
-
+let pitchButtons = document.querySelectorAll(".pitch-button");
 
 let smoothX = 0;
 let xThresh = 2.5;
 let debounceTimer = 20;
 let debounceAmount = 20;
 
-const length = 4;
+let pitch = "B2";
 
-pitchRadios.addEventListener("click", () => {
-  pitch = notes[document.querySelector('input[name="pitches"]:checked').value];
-});
+const length = 5;
+
+pitchButtons.forEach(button => button.addEventListener("click", () => {
+  let currentlyActive = document.querySelector(".active-pitch");
+  currentlyActive.classList.remove("active-pitch");
+  button.classList.add("active-pitch");
+  pitch = button.value;
+}));
 
 startButton.addEventListener("click", async () => {
 
@@ -39,9 +38,12 @@ startButton.addEventListener("click", async () => {
 
           if (xDiff > xThresh && debounceTimer <= 0) {
             document.body.style.backgroundColor = "red";
-            let octave = Math.floor(Math.random() * 2) + 3;
-            polySynth.triggerAttackRelease(pitch+octave, length, Tone.immediate());
+            metalSynth.triggerAttackRelease(pitch, length, Tone.immediate());
+            squareSynth.triggerAttackRelease(pitch, length, Tone.immediate());
+            sawSynth.triggerAttackRelease(pitch, length, Tone.immediate());
+            pluckSynth.triggerAttackRelease(pitch, length, Tone.immediate());
             debounceTimer = debounceAmount;
+            xDiffOutput.innerText = xDiff.toFixed(2);
           }
 
           if (debounceTimer-- <= 0) {
@@ -64,9 +66,12 @@ startButton.addEventListener("click", async () => {
 
       if (xDiff > xThresh && debounceTimer <= 0) {
         document.body.style.backgroundColor = "red";
-        let octave = Math.floor(Math.random() * 2) + 3;
-        polySynth.triggerAttackRelease(pitch+octave, length, Tone.immediate());
+        metalSynth.triggerAttackRelease(pitch, length, Tone.immediate());
+        squareSynth.triggerAttackRelease(pitch, length, Tone.immediate());
+        sawSynth.triggerAttackRelease(pitch, length, Tone.immediate());
+        pluckSynth.triggerAttackRelease(pitch, length, Tone.immediate());
         debounceTimer = debounceAmount;
+        xDiffOutput.innerText = xDiff.toFixed(2);
       }
 
       if (debounceTimer-- <= 0) {
@@ -77,25 +82,49 @@ startButton.addEventListener("click", async () => {
     });
   }
 
+  if (!("ontouchstart" in window)) {
+    document.getElementById("test-button").hidden = false;
+    document.getElementById("test-button").addEventListener("click", (event) => {
+      metalSynth.triggerAttackRelease(pitch, length, Tone.immediate());
+      squareSynth.triggerAttackRelease(pitch, length, Tone.immediate());
+      sawSynth.triggerAttackRelease(pitch, length, Tone.immediate());
+      pluckSynth.triggerAttackRelease(pitch, length, Tone.immediate());
+    });
+  }
+
   await Tone.start();
 
-  const polySynth = new Tone.PolySynth({
-    voice: Tone.FMSynth
+  const metalSynth = new Tone.MetalSynth();
+  const squareSynth = new Tone.MonoSynth();
+  const sawSynth = new Tone.MonoSynth();
+  const pluckSynth = new Tone.PluckSynth();
+
+
+  metalSynth.set({
+    detune: -1200,
+    harmonicity: 3.5,
+    modulationIndex: 5,
+    envelope : {
+      attack: 0,
+      decay: length/4,
+      sustain: 0,
+      release: 0
+    },
+    volume: -20
   });
 
-  polySynth.set({
-    oscillator: {
-      type: "triangle3"
+  squareSynth.set({
+    oscillator : {
+      type : "square"
     },
-    harmonicity: 5.5,
-    modulationIndex: 8,
-    envelope: {
-      attack: 0,
+    detune: -5,
+    envelope : {
+      attack: 0.01,
       decay: length,
       sustain: 0,
       release: 0
     },
-    modulationEnvelope: {
+    filterEnvelope : {
       attack: 0,
       decay: length,
       sustain: 0,
@@ -103,15 +132,60 @@ startButton.addEventListener("click", async () => {
     }
   });
 
-  const autoFilter = new Tone.AutoFilter("4n", 5, 2).start();
+  sawSynth.set({
+    oscillator : {
+      type : "sawtooth"
+    },
+    detune: -10,
+    envelope : {
+      attack: 0.01,
+      decay: length,
+      sustain: 0,
+      release: 0
+    },
+    filter : {
+      frequency: 5000
+    },
+    filterEnvelope : {
+      attack: 0,
+      decay: length,
+      sustain: 0,
+      release: 0
+    }
+  });
 
-  const chorus = new Tone.Chorus(4, 2.4, 0.15).start();
+  pluckSynth.set({
+    envelope : {
+      attack: 0.01,
+      decay: length,
+      sustain: 0,
+      release: 0
+    },
+    filter: {
+      frequency: 5000
+    },
+    filterEnvelope : {
+      attack: 0,
+      decay: length,
+      sustain: 0,
+      release: 0
+    }
+  });
 
-  polySynth.connect(autoFilter);
+  metalSynth.toDestination();
+  squareSynth.toDestination();
+  sawSynth.toDestination();
+  pluckSynth.toDestination();
 
-  polySynth.connect(chorus);
+  //const autoFilter = new Tone.AutoFilter("4n", 5, 2).start();
 
-  chorus.toDestination();
-  autoFilter.toDestination();
+  //const chorus = new Tone.Chorus(4, 2.4, 0.15).start();
+
+  //theSynth.connect(autoFilter);
+
+  //theSynth.connect(chorus);
+
+  //chorus.toDestination();
+  //autoFilter.toDestination();
 
 });

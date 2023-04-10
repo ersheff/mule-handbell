@@ -3,26 +3,30 @@ body {
   background-color: black;
 }
 
-button {
-  background-color: grey;
+.start-button, .test-button {
   font-size: 3rem;
 }
 
+.pitch-button {
+  background-color: grey;
+  font-size: 3rem;
+  width: 5ch;
+}
 
-.data-container {
+.pitches-container {
   display: flex;
+  justify-content: center;
   gap: 2ch;
 }
 
-.pitch-radios {
-  display: flex;
-  gap: 2ch;
-  font-size: 2rem;
+.active-pitch {
+  background-color: pink;
 }
 
 .pitch-column {
   display: flex;
   flex-direction: column;
+  gap: 1rem;
 }
 
 input[type=range] {
