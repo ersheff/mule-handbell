@@ -10,6 +10,7 @@ let debounceTimer = 20;
 let debounceAmount = 20;
 
 let pitch = "B2";
+let velocity = 127;
 
 const length = 5;
 
@@ -37,12 +38,14 @@ startButton.addEventListener("click", async () => {
           let xDiff = smoothX-lastX;
 
           if (xDiff > xThresh && debounceTimer <= 0) {
+            let rawVel = value_limit(xDiff, 2, 6);
+            velocity = rawVel*4+100;
             document.body.style.backgroundColor = "red";
-            metalSynth.triggerAttackRelease(pitch, length, Tone.immediate());
-            squareSynth.triggerAttackRelease(pitch, length, Tone.immediate());
-            sawSynth.triggerAttackRelease(pitch, length, Tone.immediate());
+            metalSynth.triggerAttackRelease(pitch, length, Tone.immediate(), velocity);
+            squareSynth.triggerAttackRelease(pitch, length, Tone.immediate(), velocity);
+            sawSynth.triggerAttackRelease(pitch, length, Tone.immediate(), velocity);
             debounceTimer = debounceAmount;
-            xDiffOutput.innerText = xDiff.toFixed(2);
+            xDiffOutput.innerText = velocity.toFixed(2);
           }
 
           if (debounceTimer-- <= 0) {
@@ -65,11 +68,11 @@ startButton.addEventListener("click", async () => {
 
       if (xDiff > xThresh && debounceTimer <= 0) {
         document.body.style.backgroundColor = "red";
-        metalSynth.triggerAttackRelease(pitch, length, Tone.immediate());
-        squareSynth.triggerAttackRelease(pitch, length, Tone.immediate());
-        sawSynth.triggerAttackRelease(pitch, length, Tone.immediate());
+        metalSynth.triggerAttackRelease(pitch, length, Tone.immediate(), velocity);
+        squareSynth.triggerAttackRelease(pitch, length, Tone.immediate(), velocity);
+        sawSynth.triggerAttackRelease(pitch, length, Tone.immediate(), velocity);
         debounceTimer = debounceAmount;
-        xDiffOutput.innerText = xDiff.toFixed(2);
+        xDiffOutput.innerText = valocity.toFixed(2);
       }
 
       if (debounceTimer-- <= 0) {
@@ -82,7 +85,7 @@ startButton.addEventListener("click", async () => {
 
   if (!("ontouchstart" in window)) {
     document.getElementById("test-button").hidden = false;
-    document.getElementById("test-button").addEventListener("click", (event) => {
+    document.getElementById("test-button").addEventListener("click", () => {
       metalSynth.triggerAttackRelease(pitch, length, Tone.immediate());
       squareSynth.triggerAttackRelease(pitch, length, Tone.immediate());
       sawSynth.triggerAttackRelease(pitch, length, Tone.immediate());
@@ -167,3 +170,7 @@ startButton.addEventListener("click", async () => {
   //autoFilter.toDestination();
 
 });
+
+function value_limit(val, min, max) {
+  return val < min ? min : (val > max ? max : val);
+}
