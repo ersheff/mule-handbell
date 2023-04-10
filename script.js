@@ -12,7 +12,7 @@ let debounceAmount = 20;
 let pitch = "B2";
 let velocity = 1;
 
-ler color = "red";
+let color = "red";
 
 const length = 5;
 
