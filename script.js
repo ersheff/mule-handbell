@@ -110,7 +110,7 @@ startButton.addEventListener("click", async () => {
       sustain: 0,
       release: 0
     },
-    volume: -30
+    volume: -12
   });
 
   squareSynth.set({
@@ -130,7 +130,7 @@ startButton.addEventListener("click", async () => {
       sustain: 0,
       release: 0
     },
-    volume: -10
+    volume: -6
   });
 
   sawSynth.set({
@@ -153,22 +153,22 @@ startButton.addEventListener("click", async () => {
       sustain: 0,
       release: 0
     },
-    volume: -10
+    volume: -6
   });
 
-  metalSynth.toDestination();
+  //metalSynth.toDestination();
   squareSynth.toDestination();
   sawSynth.toDestination();
 
   //const autoFilter = new Tone.AutoFilter("4n", 5, 2).start();
 
-  //const chorus = new Tone.Chorus(4, 2.4, 0.15).start();
+  const chorus = new Tone.Chorus(4, 2.4, 0.15).start();
 
-  //theSynth.connect(autoFilter);
+  metalSynth.connect(chorus);
 
   //theSynth.connect(chorus);
 
-  //chorus.toDestination();
+  chorus.toDestination();
   //autoFilter.toDestination();
 
 });
