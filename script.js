@@ -129,7 +129,8 @@ startButton.addEventListener("click", async () => {
       decay: length,
       sustain: 0,
       release: 0
-    }
+    },
+    volume: -10
   });
 
   sawSynth.set({
@@ -151,7 +152,8 @@ startButton.addEventListener("click", async () => {
       decay: length,
       sustain: 0,
       release: 0
-    }
+    },
+    volume: -10
   });
 
   pluckSynth.set({
@@ -169,7 +171,8 @@ startButton.addEventListener("click", async () => {
       decay: length,
       sustain: 0,
       release: 0
-    }
+    },
+    volume: -10
   });
 
   metalSynth.toDestination();
