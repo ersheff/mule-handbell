@@ -41,7 +41,6 @@ startButton.addEventListener("click", async () => {
             metalSynth.triggerAttackRelease(pitch, length, Tone.immediate());
             squareSynth.triggerAttackRelease(pitch, length, Tone.immediate());
             sawSynth.triggerAttackRelease(pitch, length, Tone.immediate());
-            //pluckSynth.triggerAttackRelease(pitch, length, Tone.immediate());
             debounceTimer = debounceAmount;
             xDiffOutput.innerText = xDiff.toFixed(2);
           }
@@ -69,7 +68,6 @@ startButton.addEventListener("click", async () => {
         metalSynth.triggerAttackRelease(pitch, length, Tone.immediate());
         squareSynth.triggerAttackRelease(pitch, length, Tone.immediate());
         sawSynth.triggerAttackRelease(pitch, length, Tone.immediate());
-        //pluckSynth.triggerAttackRelease(pitch, length, Tone.immediate());
         debounceTimer = debounceAmount;
         xDiffOutput.innerText = xDiff.toFixed(2);
       }
@@ -88,7 +86,6 @@ startButton.addEventListener("click", async () => {
       metalSynth.triggerAttackRelease(pitch, length, Tone.immediate());
       squareSynth.triggerAttackRelease(pitch, length, Tone.immediate());
       sawSynth.triggerAttackRelease(pitch, length, Tone.immediate());
-      //pluckSynth.triggerAttackRelease(pitch, length, Tone.immediate());
     });
   }
 
@@ -97,8 +94,6 @@ startButton.addEventListener("click", async () => {
   const metalSynth = new Tone.MetalSynth();
   const squareSynth = new Tone.MonoSynth();
   const sawSynth = new Tone.MonoSynth();
-  const pluckSynth = new Tone.PluckSynth();
-
 
   metalSynth.set({
     detune: -1200,
@@ -156,29 +151,9 @@ startButton.addEventListener("click", async () => {
     volume: -10
   });
 
-  pluckSynth.set({
-    envelope : {
-      attack: 0.01,
-      decay: length,
-      sustain: 0,
-      release: 0
-    },
-    filter: {
-      frequency: 5000
-    },
-    filterEnvelope : {
-      attack: 0,
-      decay: length,
-      sustain: 0,
-      release: 0
-    },
-    volume: -10
-  });
-
   metalSynth.toDestination();
   squareSynth.toDestination();
   sawSynth.toDestination();
-  pluckSynth.toDestination();
 
   //const autoFilter = new Tone.AutoFilter("4n", 5, 2).start();
 
