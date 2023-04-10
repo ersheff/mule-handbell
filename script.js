@@ -39,7 +39,7 @@ startButton.addEventListener("click", async () => {
 
           if (xDiff > xThresh && debounceTimer <= 0) {
             let rawVel = value_limit(xDiff, 2, 6);
-            velocity = rawVel*.05+0.7;
+            velocity = rawVel*0.1+0.4;
             document.body.style.backgroundColor = "red";
             metalSynth.triggerAttackRelease(pitch, length, Tone.immediate(), velocity);
             squareSynth.triggerAttackRelease(pitch, length, Tone.immediate(), velocity);
@@ -68,7 +68,7 @@ startButton.addEventListener("click", async () => {
 
       if (xDiff > xThresh && debounceTimer <= 0) {
         let rawVel = value_limit(xDiff, 2, 6);
-        velocity = rawVel*.05+0.7;
+        velocity = rawVel*0.1+0.4;
         document.body.style.backgroundColor = "red";
         metalSynth.triggerAttackRelease(pitch, length, Tone.immediate(), velocity);
         squareSynth.triggerAttackRelease(pitch, length, Tone.immediate(), velocity);
