@@ -144,7 +144,7 @@ startButton.addEventListener("click", async () => {
       sustain: 0,
       release: 0
     },
-    volume: -20
+    volume: -24
   });
 
   squareSynth.set({
