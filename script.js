@@ -12,6 +12,8 @@ let debounceAmount = 20;
 let pitch = "B2";
 let velocity = 1;
 
+ler color = "red";
+
 const length = 5;
 
 pitchButtons.forEach(button => button.addEventListener("click", () => {
@@ -40,7 +42,23 @@ startButton.addEventListener("click", async () => {
           if (xDiff > xThresh && debounceTimer <= 0) {
             let rawVel = value_limit(xDiff, 2, 6);
             velocity = rawVel*0.15+0.1;
-            document.body.style.backgroundColor = "red";
+            if (pitch == "B2" || pitch == "B3") {
+              color = "red";
+            }
+            else if (pitch == "C4") {
+              color = "pink";
+            }
+            else if (pitch == "D4") {
+              color = "orange";
+            }
+            else if (pitch == "D#4") {
+              color = "green";
+            }
+            else if (pitch == "F#4") {
+              color = "yellow";
+            }
+            else color = "red";
+            document.body.style.backgroundColor = color;
             metalSynth.triggerAttackRelease(pitch, length, Tone.immediate(), velocity);
             squareSynth.triggerAttackRelease(pitch, length, Tone.immediate(), velocity);
             sawSynth.triggerAttackRelease(pitch, length, Tone.immediate(), velocity);
@@ -69,7 +87,23 @@ startButton.addEventListener("click", async () => {
       if (xDiff > xThresh && debounceTimer <= 0) {
         let rawVel = value_limit(xDiff, 2, 6);
         velocity = rawVel*0.15+0.1;
-        document.body.style.backgroundColor = "red";
+        if (pitch == "B2" || pitch == "B3") {
+          color = "red";
+        }
+        else if (pitch == "C4") {
+          color = "pink";
+        }
+        else if (pitch == "D4") {
+          color = "orange";
+        }
+        else if (pitch == "D#4") {
+          color = "green";
+        }
+        else if (pitch == "F#4") {
+          color = "yellow";
+        }
+        else color = "red";
+        document.body.style.backgroundColor = color;
         metalSynth.triggerAttackRelease(pitch, length, Tone.immediate(), velocity);
         squareSynth.triggerAttackRelease(pitch, length, Tone.immediate(), velocity);
         sawSynth.triggerAttackRelease(pitch, length, Tone.immediate(), velocity);
@@ -105,27 +139,26 @@ startButton.addEventListener("click", async () => {
     harmonicity: 3.5,
     modulationIndex: 5,
     envelope : {
-      attack: 0,
+      attack: 0.01,
       decay: length/4,
       sustain: 0,
       release: 0
     },
-    volume: -12
+    volume: -20
   });
 
   squareSynth.set({
     oscillator : {
       type : "square"
     },
-    detune: -5,
     envelope : {
-      attack: 0.01,
+      attack: 0.2,
       decay: length,
       sustain: 0,
       release: 0
     },
     filterEnvelope : {
-      attack: 0,
+      attack: 0.01,
       decay: length,
       sustain: 0,
       release: 0
@@ -137,7 +170,7 @@ startButton.addEventListener("click", async () => {
     oscillator : {
       type : "sawtooth"
     },
-    detune: -10,
+    detune: -5,
     envelope : {
       attack: 0.01,
       decay: length,
@@ -145,25 +178,29 @@ startButton.addEventListener("click", async () => {
       release: 0
     },
     filter : {
-      frequency: 5000
+      type: "lowpass",
+      rolloff: -24
     },
     filterEnvelope : {
-      attack: 0,
-      decay: length,
+      attack: 0.01,
+      decay: length/2,
       sustain: 0,
-      release: 0
+      release: 0,
+      baseFrequency: "G4",
+      octaves: 3.2
     },
     volume: -6
   });
 
   //metalSynth.toDestination();
-  squareSynth.toDestination();
+  //squareSynth.toDestination();
   sawSynth.toDestination();
 
   //const autoFilter = new Tone.AutoFilter("4n", 5, 2).start();
 
   const chorus = new Tone.Chorus(4, 2.4, 0.15).start();
 
+  squareSynth.connect(chorus);
   metalSynth.connect(chorus);
 
   //theSynth.connect(chorus);
