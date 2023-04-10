@@ -10,7 +10,7 @@ let debounceTimer = 20;
 let debounceAmount = 20;
 
 let pitch = "B2";
-let velocity = 127;
+let velocity = 1;
 
 const length = 5;
 
@@ -39,7 +39,7 @@ startButton.addEventListener("click", async () => {
 
           if (xDiff > xThresh && debounceTimer <= 0) {
             let rawVel = value_limit(xDiff, 2, 6);
-            velocity = rawVel*4+100;
+            velocity = rawVel*.05+0.7;
             document.body.style.backgroundColor = "red";
             metalSynth.triggerAttackRelease(pitch, length, Tone.immediate(), velocity);
             squareSynth.triggerAttackRelease(pitch, length, Tone.immediate(), velocity);
@@ -67,6 +67,8 @@ startButton.addEventListener("click", async () => {
       let xDiff = smoothX-lastX;
 
       if (xDiff > xThresh && debounceTimer <= 0) {
+        let rawVel = value_limit(xDiff, 2, 6);
+        velocity = rawVel*.05+0.7;
         document.body.style.backgroundColor = "red";
         metalSynth.triggerAttackRelease(pitch, length, Tone.immediate(), velocity);
         squareSynth.triggerAttackRelease(pitch, length, Tone.immediate(), velocity);
