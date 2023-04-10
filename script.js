@@ -5,7 +5,7 @@ let startButton = document.getElementById("start-button");
 let pitchButtons = document.querySelectorAll(".pitch-button");
 
 let smoothX = 0;
-let xThresh = 2.2;
+let xThresh = 2;
 let debounceTimer = 10;
 let debounceAmount = 10;
 
