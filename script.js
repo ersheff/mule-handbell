@@ -9,7 +9,7 @@ let xThresh = 2.2;
 let debounceTimer = 20;
 let debounceAmount = 20;
 
-let pitch = "B2";
+let pitch = "B3";
 let velocity = 1;
 
 let color = "red";
