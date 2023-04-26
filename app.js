@@ -73,36 +73,34 @@ const setup = async () => {
             let smoothX = event.acceleration.x*0.15 + lastX*0.85;
             diffX = smoothX - lastX;
 
-            if (diffX > eventThreshold && diffX < lastDiffX && debounceTimer >= debounceAmount) {
+            if (diffX > eventThreshold && debounceTimer >= debounceAmount) {
               //let rawVel = value_limit(diffX, eventThreshold, eventMax);
-                velocityTrigger = 127;
-                if (pitch == "B2" || pitch == "B3") {
-                  color = "red";
-                }
-                else if (pitch == "C4") {
-                  color = "pink";
-                }
-                else if (pitch == "D4") {
-                  color = "orange";
-                }
-                else if (pitch == "D#4") {
-                  color = "green";
-                }
-                else if (pitch == "F#4") {
-                  color = "yellow";
-                }
-                else color = "red";
-                document.body.style.backgroundColor = color;
-                triggerNote(pitch, velocityTrigger);
-                debounceTimer = 0;
+              velocityTrigger = 127;
+              if (pitch == "B2" || pitch == "B3") {
+                color = "red";
               }
+              else if (pitch == "C4") {
+                color = "pink";
+              }
+              else if (pitch == "D4") {
+                color = "orange";
+              }
+              else if (pitch == "D#4") {
+                color = "green";
+              }
+              else if (pitch == "F#4") {
+                color = "yellow";
+              }
+              else color = "red";
+              document.body.style.backgroundColor = color;
+              triggerNote(pitch, velocityTrigger);
+              debounceTimer = 0;
+            }
             
-              if (debounceTimer++ >= debounceAmount) {
-                debounceTimer = debounceAmount;
-                document.body.style.backgroundColor = "black";
-              }
-
-            console.log(diffX);
+            if (debounceTimer++ >= debounceAmount) {
+              debounceTimer = debounceAmount;
+              document.body.style.backgroundColor = "black";
+            }
 
             lastX = smoothX;
             lastDiffX = diffX;
