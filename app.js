@@ -52,7 +52,7 @@ const setup = async () => {
   // connect device to AudioContext audio output
   device.node.connect(context.destination);
 
-  startButton.addEventListener("click", async () => {
+  document.getElementById("start-button").addEventListener("click", async () => {
     if (typeof DeviceMotionEvent.requestPermission === "function") {
       DeviceMotionEvent.requestPermission().then(response => {
         if (response === "granted") {
