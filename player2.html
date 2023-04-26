@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <script type="text/javascript" src="https://cdn.cycling74.com/rnbo/latest/rnbo.min.js"></script>
+  <script src="app.js" defer></script>
+  <title>Tintinambulance - Player 2</title>
+</head>
+<body>
+
+  <h1>Tintinambulance</h1>
+  <h2>Player 2</h2>
+
+  <select name="orientation" id="orientation-select">
+    <option value="left-hand">Left Hand</option>
+    <option value="right-hand">Right Hand</option>
+    <option value="top">Top</option>
+  </select>
+  
+  <button class="start-button" id="start-accel">START ACCEL</button>
+  <button class="start-button" id="start-audio">START AUDIO</button>
+
+  <div class="pitches-container">
+    <p class="section-label">1</p>
+    <button class="pitch-button active-pitch" id="C5-1" value="72">C5</button>
+    <button class="pitch-button" id="Eb5-1" value="75">Eb5</button>
+  </div>
+
+  <div class="pitches-container">
+    <p class="section-label">2</p>
+    <button class="pitch-button" id="G4-2" value="67">G4</button>
+    <button class="pitch-button" id="A4-2" value="69">A4</button>
+  </div>
+
+  <div class="pitches-container">
+    <p class="section-label">3</p>
+    <button class="pitch-button" id="G4-3" value="67">G4</button>
+    <button class="pitch-button" id="Eb5-3" value="75">Eb5</button>
+  </div>
+
+  <div class="pitches-container">
+    <p class="section-label">4</p>
+    <button class="pitch-button" id="C5-3" value="72">C5</button>
+    <button class="pitch-button" id="Eb5-3" value="75">Eb5</button>
+  </div>
+
+</body>
+</html>

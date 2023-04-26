@@ -22,7 +22,7 @@ let myOrientation = "left-hand";
 
 document.getElementById("orientation-select").addEventListener("input", () => {
   myOrientation = document.getElementById("orientation-select").value;
-  console.log(myOrientation);
+  //console.log(myOrientation);
 });
 
 
@@ -77,7 +77,7 @@ const setup = async () => {
       DeviceMotionEvent.requestPermission().then(async (response) => {
         if (response === "granted") {
           document.getElementById("start-accel").disabled = true;
-          console.log("granted!");
+          //console.log("granted!");
           window.addEventListener("devicemotion", (event) => {
             let accX = event.acceleration.x;
             diffX = accX - lastX;
@@ -134,8 +134,8 @@ const setup = async () => {
               }
             }
             else if (myOrientation === "top") {
-              if (diffZ > eventThreshold && debounceTimer >= debounceAmount) {
-                let velocityTrigger = (value_limit(diffZ, eventMax, eventThreshold))*4.2;
+              if (diffZ > -eventThreshold && debounceTimer >= debounceAmount) {
+                let velocityTrigger = (value_limit(-diffZ, eventMax, eventThreshold))*4.2;
                 if (pitch == "B2" || pitch == "B3") {
                   color = "red";
                 }
@@ -176,7 +176,7 @@ const setup = async () => {
   });
 
   function triggerNote(p, v) {
-    console.log(`triggering note: ${p} at velocity: ${v}`);
+    //console.log(`triggering note: ${p} at velocity: ${v}`);
     const midiNote = new MessageEvent(TimeNow, "in2", [ p ]);
     const velocity = new MessageEvent(TimeNow, "in1", [ v ]);
     device.scheduleEvent(midiNote);
