@@ -173,6 +173,102 @@ const setup = async () => {
         }
       });
     }
+    else {
+      document.getElementById("start-accel").disabled = true;
+      //console.log("granted!");
+      window.addEventListener("devicemotion", (event) => {
+        let accX = event.acceleration.x;
+        diffX = accX - lastX;
+
+        let accZ = event.acceleration.z;
+        diffZ = accZ - lastZ;
+
+        if (myOrientation === "left-hand") {
+          if (diffX > eventThreshold && debounceTimer >= debounceAmount) {
+            let velocityTrigger = (value_limit(diffX, eventThreshold, eventMax))*4.2;
+            if (pitch == "B2" || pitch == "B3") {
+              color = "red";
+            }
+            else if (pitch == "C4") {
+              color = "pink";
+            }
+            else if (pitch == "D4") {
+              color = "orange";
+            }
+            else if (pitch == "D#4") {
+              color = "green";
+            }
+            else if (pitch == "F#4") {
+              color = "yellow";
+            }
+            else color = "red";
+            document.body.style.backgroundColor = color;
+            triggerNote(pitch, velocityTrigger);
+            debounceTimer = 0;
+          }
+        }
+        else if (myOrientation === "right-hand") {
+          if (diffX < -eventThreshold && debounceTimer >= debounceAmount) {
+            let velocityTrigger = (value_limit(-diffX, eventMax, eventThreshold))*4.2;
+            if (pitch == "B2" || pitch == "B3") {
+              color = "red";
+            }
+            else if (pitch == "C4") {
+              color = "pink";
+            }
+            else if (pitch == "D4") {
+              color = "orange";
+            }
+            else if (pitch == "D#4") {
+              color = "green";
+            }
+            else if (pitch == "F#4") {
+              color = "yellow";
+            }
+            else color = "red";
+            document.body.style.backgroundColor = color;
+            triggerNote(pitch, velocityTrigger);
+            debounceTimer = 0;
+          }
+        }
+        else if (myOrientation === "top") {
+          if (diffZ > eventThreshold && debounceTimer >= debounceAmount) {
+            let velocityTrigger = (value_limit(diffZ, eventMax, eventThreshold))*4.2;
+            if (pitch == "B2" || pitch == "B3") {
+              color = "red";
+            }
+            else if (pitch == "C4") {
+              color = "pink";
+            }
+            else if (pitch == "D4") {
+              color = "orange";
+            }
+            else if (pitch == "D#4") {
+              color = "green";
+            }
+            else if (pitch == "F#4") {
+              color = "yellow";
+            }
+            else color = "red";
+            document.body.style.backgroundColor = color;
+            triggerNote(pitch, velocityTrigger);
+            debounceTimer = 0;
+          }
+        }
+        
+        if (debounceTimer++ >= debounceAmount) {
+          debounceTimer = debounceAmount;
+          document.body.style.backgroundColor = "black";
+        }
+
+        lastX = accX;
+        lastDiffX = diffX;
+
+        lastZ = accZ;
+        lastDiffZ = diffZ;
+
+      });
+    }
   });
 
   function triggerNote(p, v) {
