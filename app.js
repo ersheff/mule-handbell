@@ -134,8 +134,8 @@ const setup = async () => {
               }
             }
             else if (myOrientation === "top") {
-              if (diffZ > -eventThreshold && debounceTimer >= debounceAmount) {
-                let velocityTrigger = (value_limit(-diffZ, eventMax, eventThreshold))*4.2;
+              if (diffZ > eventThreshold && debounceTimer >= debounceAmount) {
+                let velocityTrigger = (value_limit(diffZ, eventMax, eventThreshold))*4.2;
                 if (pitch == "B2" || pitch == "B3") {
                   color = "red";
                 }
