@@ -73,7 +73,9 @@ const setup = async () => {
             let smoothX = event.acceleration.x*0.15 + lastX*0.85;
             diffX = smoothX - lastX;
 
-            if (diffX > eventThreshold && debounceTimer >= debounceAmount) {
+            console.log(diffX);
+
+            if (diffX > eventThreshold && diffX < lastDiffX && debounceTimer >= debounceAmount) {
               //let rawVel = value_limit(diffX, eventThreshold, eventMax);
               velocityTrigger = 127;
               if (pitch == "B2" || pitch == "B3") {
