@@ -109,12 +109,12 @@ const setup = async () => {
         let lastX = smoothX;
         smoothX = (lastX*0.75)+(x*0.25);
         xSmoothOutput.innerText = smoothX.toFixed(2);
-  
+
         let xDiff = smoothX-lastX;
-  
+
         if (xDiff > xThresh && debounceTimer <= 0) {
           let rawVel = value_limit(xDiff, 2, 6);
-          velocity = rawVel*0.15+0.1;
+          velocityTrigger = rawVel*0.15+0.1;
           if (pitch == "B2" || pitch == "B3") {
             color = "red";
           }
@@ -132,12 +132,11 @@ const setup = async () => {
           }
           else color = "red";
           document.body.style.backgroundColor = color;
-          metalSynth.triggerAttackRelease(pitch, length, Tone.immediate(), velocity);
-          squareSynth.triggerAttackRelease(pitch, length, Tone.immediate(), velocity);
-          sawSynth.triggerAttackRelease(pitch, length, Tone.immediate(), velocity);
+          triggerNote(pitch, 127);
           debounceTimer = debounceAmount;
-          xDiffOutput.innerText = valocity.toFixed(2);
+          xDiffOutput.innerText = velocityTrigger.toFixed(2);
         }
+
         if (debounceTimer-- <= 0) {
           debounceTimer = 0;
           document.body.style.backgroundColor = "black";
