@@ -62,6 +62,8 @@ const setup = async () => {
     context.resume();
     e.target.disabled = true;
 
+    console.log("start button pressed");
+
     if (typeof DeviceMotionEvent.requestPermission === "function") {
       DeviceMotionEvent.requestPermission().then(response => {
         if (response === "granted") {
