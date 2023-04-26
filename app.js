@@ -115,6 +115,7 @@ const setup = async () => {
   };
 
   function triggerNote(p, v) {
+    console.log("triggering note");
     const midiNote = new MessageEvent(TimeNow, "in2", [ p ]);
     const velocity = new MessageEvent(TimeNow, "in1", [ v ]);
     device.scheduleEvent(midiNote);
