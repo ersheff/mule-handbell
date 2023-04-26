@@ -62,6 +62,36 @@ const setup = async () => {
     context.resume();
     e.target.disabled = true;
   }
+
+  if (diffX > eventThreshold && diffX < lastDiffX && debounceTimer >= debounceAmount) {
+  //let rawVel = value_limit(diffX, eventThreshold, eventMax);
+    velocityTrigger = 127;
+    if (pitch == "B2" || pitch == "B3") {
+      color = "red";
+    }
+    else if (pitch == "C4") {
+      color = "pink";
+    }
+    else if (pitch == "D4") {
+      color = "orange";
+    }
+    else if (pitch == "D#4") {
+      color = "green";
+    }
+    else if (pitch == "F#4") {
+      color = "yellow";
+    }
+    else color = "red";
+    document.body.style.backgroundColor = color;
+    triggerNote(pitch, velocityTrigger);
+    debounceTimer = 0;
+  }
+
+  if (debounceTimer++ >= debounceAmount) {
+    debounceTimer = debounceAmount;
+    document.body.style.backgroundColor = "black";
+  }
+
   function triggerNote(p, v) {
     console.log(`triggering note: ${p} at velocity: ${v}`);
     const midiNote = new MessageEvent(TimeNow, "in2", [ p ]);
@@ -84,41 +114,13 @@ document.getElementById("start-accel").addEventListener("click", async () => {
   if (typeof DeviceMotionEvent.requestPermission === "function") {
     DeviceMotionEvent.requestPermission().then(async (response) => {
       if (response === "granted") {
+        document.getElementById("start-accel").disabled = true;
         console.log("granted!");
         window.addEventListener("devicemotion", (event) => {
           let smoothX = event.acceleration.x*0.15 + lastX*0.85;
           diffX = smoothX - lastX;
 
           console.log(diffX);
-
-          /*if (diffX > eventThreshold && diffX < lastDiffX && debounceTimer >= debounceAmount) {
-            //let rawVel = value_limit(diffX, eventThreshold, eventMax);
-            velocityTrigger = 127;
-            if (pitch == "B2" || pitch == "B3") {
-              color = "red";
-            }
-            else if (pitch == "C4") {
-              color = "pink";
-            }
-            else if (pitch == "D4") {
-              color = "orange";
-            }
-            else if (pitch == "D#4") {
-              color = "green";
-            }
-            else if (pitch == "F#4") {
-              color = "yellow";
-            }
-            else color = "red";
-            document.body.style.backgroundColor = color;
-            triggerNote(pitch, velocityTrigger);
-            debounceTimer = 0;
-          }
-
-          if (debounceTimer++ >= debounceAmount) {
-            debounceTimer = debounceAmount;
-            document.body.style.backgroundColor = "black";
-          }*/
 
           lastX = smoothX;
           lastDiffX = diffX;
