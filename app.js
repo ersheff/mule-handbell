@@ -1,17 +1,22 @@
-let xSmoothOutput = document.getElementById("x-smooth-output");
-let xDiffOutput = document.getElementById("x-diff-output");
-
 let pitchButtons = document.querySelectorAll(".pitch-button");
 
-let smoothX = 0;
-let xThresh = 2.2;
+let eventThreshold = 2.2;
+let eventMax = 5;
+
 let debounceTimer = 20;
 let debounceAmount = 20;
+
+let lastX = 0;
+let lastDiffX = 0;
+
+let lastZ = 0;
+let lastDiffZ = 0;
 
 let pitch = 74;
 let velocityTrigger = 127;
 
-let color = "red";
+let color = "blue";
+
 
 pitchButtons.forEach(button => button.addEventListener("click", () => {
   let currentlyActive = document.querySelector(".active-pitch");
@@ -62,16 +67,14 @@ const setup = async () => {
         if (response === "granted") {
           console.log("granted!");
           window.addEventListener("devicemotion", (event) => {
-            let x = Math.abs(event.acceleration.x);
-            let lastX = smoothX;
-            smoothX = (lastX*0.75)+(x*0.25);
-            xSmoothOutput.innerText = smoothX.toFixed(2);
-  
-            let xDiff = smoothX-lastX;
-  
-            if (xDiff > xThresh && debounceTimer <= 0) {
-              let rawVel = value_limit(xDiff, 2, 6);
-              velocityTrigger = rawVel*0.15+0.1;
+            let smoothX = event.acceleration.x*0.15 + lastX*0.85;
+            let diffX = smoothX - lastX;
+
+            console.log(diffX);
+    
+            if (diffX > eventThreshold && diffX < lastDiffX && debounceTimer >= debounceAmount) {
+              //let rawVel = value_limit(diffX, eventThreshold, eventMax);
+              velocityTrigger = 127;
               if (pitch == "B2" || pitch == "B3") {
                 color = "red";
               }
@@ -89,15 +92,17 @@ const setup = async () => {
               }
               else color = "red";
               document.body.style.backgroundColor = color;
-              triggerNote(pitch, 127);
-              debounceTimer = debounceAmount;
-              xDiffOutput.innerText = velocityTrigger.toFixed(2);
+              triggerNote(pitch, velocityTrigger);
+              debounceTimer = 0;
             }
   
-            if (debounceTimer-- <= 0) {
-              debounceTimer = 0;
+            if (debounceTimer++ >= debounceAmount) {
+              debounceTimer = debounceAmount;
               document.body.style.backgroundColor = "black";
             }
+
+            lastX = smoothX;
+            lastDiffX = diffX;
   
           });
         }
