@@ -3,7 +3,7 @@ body {
   background-color: black;
 }
 
-.start-button, .test-button {
+.start-button, .test-button, select {
   font-size: 1.2rem;
 }
 

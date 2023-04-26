@@ -1,10 +1,10 @@
 let pitchButtons = document.querySelectorAll(".pitch-button");
 
-let eventThreshold = 2.2;
-let eventMax = 5;
+let eventThreshold = 10;
+let eventMax = 30;
 
-let debounceTimer = 20;
-let debounceAmount = 20;
+let debounceTimer = 50;
+let debounceAmount = 50;
 
 let diffX = 0;
 let lastX = 0;
@@ -14,7 +14,6 @@ let lastZ = 0;
 let lastDiffZ = 0;
 
 let pitch = 74;
-let velocityTrigger = 127;
 
 let color = "blue";
 
@@ -75,9 +74,9 @@ const setup = async () => {
 
             console.log(diffX);
 
+            // orientation
             if (diffX > eventThreshold && diffX < lastDiffX && debounceTimer >= debounceAmount) {
-              //let rawVel = value_limit(diffX, eventThreshold, eventMax);
-              velocityTrigger = 127;
+              let velocityTrigger = value_limit(diffX, eventThreshold, eventMax);;
               if (pitch == "B2" || pitch == "B3") {
                 color = "red";
               }
@@ -127,11 +126,7 @@ const setup = async () => {
   
 };
 
-
 setup();
-
-
-/*
 
 
 startButton.addEventListener("click", async () => {
