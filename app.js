@@ -70,8 +70,8 @@ const setup = async () => {
           document.getElementById("start-accel").disabled = true;
           console.log("granted!");
           window.addEventListener("devicemotion", (event) => {
-            let smoothX = event.acceleration.x*0.15 + lastX*0.85;
-            diffX = smoothX - lastX;
+            let accX = event.acceleration.x;
+            diffX = accX - lastX;
 
             console.log(diffX);
 
@@ -104,7 +104,7 @@ const setup = async () => {
               document.body.style.backgroundColor = "black";
             }
 
-            lastX = smoothX;
+            lastX = accX;
             lastDiffX = diffX;
   
           });
