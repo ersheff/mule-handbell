@@ -67,18 +67,6 @@ const setup = async () => {
     device.scheduleEvent(midiNote);
     device.scheduleEvent(velocity);
   };
-
-  function triggerNote(p, v) {
-    console.log("triggering note");
-    const midiNote = new MessageEvent(TimeNow, "in2", [ p ]);
-    const velocity = new MessageEvent(TimeNow, "in1", [ v ]);
-    device.scheduleEvent(midiNote);
-    device.scheduleEvent(velocity);
-  }
-
-  function value_limit(val, min, max) {
-    return val < min ? min : (val > max ? max : val);
-  }
   
 };
 
@@ -129,6 +117,18 @@ document.getElementById("start-accel").addEventListener("click", async () => {
 });
 
 setup();
+
+function triggerNote(p, v) {
+  console.log("triggering note");
+  const midiNote = new MessageEvent(TimeNow, "in2", [ p ]);
+  const velocity = new MessageEvent(TimeNow, "in1", [ v ]);
+  device.scheduleEvent(midiNote);
+  device.scheduleEvent(velocity);
+}
+
+function value_limit(val, min, max) {
+  return val < min ? min : (val > max ? max : val);
+}
 
 /*
 
