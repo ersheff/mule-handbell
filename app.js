@@ -63,6 +63,9 @@ const setup = async () => {
     e.target.disabled = true;
   }
 
+  console.log(diffX);
+
+
   if (diffX > eventThreshold && diffX < lastDiffX && debounceTimer >= debounceAmount) {
   //let rawVel = value_limit(diffX, eventThreshold, eventMax);
     velocityTrigger = 127;
@@ -119,9 +122,6 @@ document.getElementById("start-accel").addEventListener("click", async () => {
         window.addEventListener("devicemotion", (event) => {
           let smoothX = event.acceleration.x*0.15 + lastX*0.85;
           diffX = smoothX - lastX;
-
-          console.log(diffX);
-
           lastX = smoothX;
           lastDiffX = diffX;
 
