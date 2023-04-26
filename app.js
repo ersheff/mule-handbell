@@ -20,8 +20,6 @@ pitchButtons.forEach(button => button.addEventListener("click", () => {
   pitch = button.value;
 }));
 
-const { TimeNow, MessageEvent } = RNBO;
-
 const setup = async () => {
 
   // create WebAudio AudioContext
@@ -34,6 +32,8 @@ const setup = async () => {
 
   // create RNBO device
   const device = await RNBO.createDevice({ context, patcher });
+
+  const { TimeNow, MessageEvent } = RNBO;
 
   // Load the exported dependencies.json file
   let dependencies = await fetch("export/dependencies.json");
@@ -71,11 +71,13 @@ const setup = async () => {
 };
 
 document.getElementById("start-accel").addEventListener("click", async () => {
+  
   document.getElementById("start-accel").disabled = true;
 
   if (typeof DeviceMotionEvent.requestPermission === "function") {
     DeviceMotionEvent.requestPermission().then(response => {
       if (response === "granted") {
+        setup();
         window.addEventListener("devicemotion", (event) => {
           let x = Math.abs(event.acceleration.x);
           let lastX = smoothX;
@@ -114,21 +116,19 @@ document.getElementById("start-accel").addEventListener("click", async () => {
       }
     });
   }
+  function triggerNote(p, v) {
+    console.log("triggering note");
+    const midiNote = new MessageEvent(TimeNow, "in2", [ p ]);
+    const velocity = new MessageEvent(TimeNow, "in1", [ v ]);
+    device.scheduleEvent(midiNote);
+    device.scheduleEvent(velocity);
+  }
+
+  function value_limit(val, min, max) {
+    return val < min ? min : (val > max ? max : val);
+  }
+  
 });
-
-setup();
-
-function triggerNote(p, v) {
-  console.log("triggering note");
-  const midiNote = new MessageEvent(TimeNow, "in2", [ p ]);
-  const velocity = new MessageEvent(TimeNow, "in1", [ v ]);
-  device.scheduleEvent(midiNote);
-  device.scheduleEvent(velocity);
-}
-
-function value_limit(val, min, max) {
-  return val < min ? min : (val > max ? max : val);
-}
 
 /*
 
