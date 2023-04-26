@@ -61,6 +61,45 @@ const setup = async () => {
       DeviceMotionEvent.requestPermission().then(response => {
         if (response === "granted") {
           console.log("granted!");
+          window.addEventListener("devicemotion", (event) => {
+            let x = Math.abs(event.acceleration.x);
+            let lastX = smoothX;
+            smoothX = (lastX*0.75)+(x*0.25);
+            xSmoothOutput.innerText = smoothX.toFixed(2);
+  
+            let xDiff = smoothX-lastX;
+  
+            if (xDiff > xThresh && debounceTimer <= 0) {
+              let rawVel = value_limit(xDiff, 2, 6);
+              velocityTrigger = rawVel*0.15+0.1;
+              if (pitch == "B2" || pitch == "B3") {
+                color = "red";
+              }
+              else if (pitch == "C4") {
+                color = "pink";
+              }
+              else if (pitch == "D4") {
+                color = "orange";
+              }
+              else if (pitch == "D#4") {
+                color = "green";
+              }
+              else if (pitch == "F#4") {
+                color = "yellow";
+              }
+              else color = "red";
+              document.body.style.backgroundColor = color;
+              triggerNote(pitch, velocityTrigger);
+              debounceTimer = debounceAmount;
+              xDiffOutput.innerText = velocityTrigger.toFixed(2);
+            }
+  
+            if (debounceTimer-- <= 0) {
+              debounceTimer = 0;
+              document.body.style.backgroundColor = "black";
+            }
+  
+          });
         }
       });
     }
