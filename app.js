@@ -89,7 +89,7 @@ const setup = async () => {
               }
               else color = "red";
               document.body.style.backgroundColor = color;
-              triggerNote(pitch, velocityTrigger);
+              triggerNote(pitch, 127);
               debounceTimer = debounceAmount;
               xDiffOutput.innerText = velocityTrigger.toFixed(2);
             }
