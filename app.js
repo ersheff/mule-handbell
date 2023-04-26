@@ -20,6 +20,8 @@ pitchButtons.forEach(button => button.addEventListener("click", () => {
   pitch = button.value;
 }));
 
+const { TimeNow, MessageEvent } = RNBO;
+
 const setup = async () => {
 
   // create WebAudio AudioContext
@@ -32,8 +34,6 @@ const setup = async () => {
 
   // create RNBO device
   const device = await RNBO.createDevice({ context, patcher });
-
-  const { TimeNow, MessageEvent } = RNBO;
 
   // Load the exported dependencies.json file
   let dependencies = await fetch("export/dependencies.json");
