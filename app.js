@@ -53,6 +53,9 @@ const setup = async () => {
   device.node.connect(context.destination);
 
   document.getElementById("start-button").addEventListener("click", async () => {
+    context.resume();
+    document.getElementById("start-button").disabled = true;
+
     if (typeof DeviceMotionEvent.requestPermission === "function") {
       DeviceMotionEvent.requestPermission().then(response => {
         if (response === "granted") {
@@ -95,12 +98,11 @@ const setup = async () => {
       });
     }
   });
-  
   // start audio with a button
-  document.getElementById("start-button").onpointerdown = (e) => {
+  /*document.getElementById("start-button").onpointerdown = (e) => {
     context.resume();
     e.target.disabled = true;
-  };
+  };*/
 
   //
 
