@@ -51,22 +51,17 @@ const setup = async () => {
 
   // connect device to AudioContext audio output
   device.node.connect(context.destination);
-  
-  // start audio with a button
-  document.getElementById("start-button").onpointerdown = (e) => {
-    
+
+  startButton.addEventListener("click", async () => {
     if (typeof DeviceMotionEvent.requestPermission === "function") {
       DeviceMotionEvent.requestPermission().then(response => {
         if (response === "granted") {
-  
           window.addEventListener("devicemotion", (event) => {
             let x = Math.abs(event.acceleration.x);
             let lastX = smoothX;
             smoothX = (lastX*0.75)+(x*0.25);
             xSmoothOutput.innerText = smoothX.toFixed(2);
-  
             let xDiff = smoothX-lastX;
-  
             if (xDiff > xThresh && debounceTimer <= 0) {
               let rawVel = value_limit(xDiff, 2, 6);
               velocityTrigger = rawVel*0.15+0.1;
@@ -91,16 +86,18 @@ const setup = async () => {
               debounceTimer = debounceAmount;
               xDiffOutput.innerText = velocityTrigger.toFixed(2);
             }
-  
             if (debounceTimer-- <= 0) {
               debounceTimer = 0;
               document.body.style.backgroundColor = "black";
             }
-  
           });
         }
       });
     }
+  });
+  
+  // start audio with a button
+  document.getElementById("start-button").onpointerdown = (e) => {
     context.resume();
     e.target.disabled = true;
   };
