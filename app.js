@@ -65,7 +65,7 @@ const setup = async () => {
     console.log("start button pressed");
 
     if (typeof DeviceMotionEvent.requestPermission === "function") {
-      DeviceMotionEvent.requestPermission().then(response => {
+      DeviceMotionEvent.requestPermission().then(response => async () => {
         if (response === "granted") {
           console.log("granted!");
           window.addEventListener("devicemotion", (event) => {
