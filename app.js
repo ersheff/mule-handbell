@@ -103,6 +103,48 @@ const setup = async () => {
         }
       });
     }
+    else {
+      window.addEventListener("devicemotion", (event) => {
+        let x = Math.abs(event.acceleration.x);
+        let lastX = smoothX;
+        smoothX = (lastX*0.75)+(x*0.25);
+        xSmoothOutput.innerText = smoothX.toFixed(2);
+  
+        let xDiff = smoothX-lastX;
+  
+        if (xDiff > xThresh && debounceTimer <= 0) {
+          let rawVel = value_limit(xDiff, 2, 6);
+          velocity = rawVel*0.15+0.1;
+          if (pitch == "B2" || pitch == "B3") {
+            color = "red";
+          }
+          else if (pitch == "C4") {
+            color = "pink";
+          }
+          else if (pitch == "D4") {
+            color = "orange";
+          }
+          else if (pitch == "D#4") {
+            color = "green";
+          }
+          else if (pitch == "F#4") {
+            color = "yellow";
+          }
+          else color = "red";
+          document.body.style.backgroundColor = color;
+          metalSynth.triggerAttackRelease(pitch, length, Tone.immediate(), velocity);
+          squareSynth.triggerAttackRelease(pitch, length, Tone.immediate(), velocity);
+          sawSynth.triggerAttackRelease(pitch, length, Tone.immediate(), velocity);
+          debounceTimer = debounceAmount;
+          xDiffOutput.innerText = valocity.toFixed(2);
+        }
+        if (debounceTimer-- <= 0) {
+          debounceTimer = 0;
+          document.body.style.backgroundColor = "black";
+        }
+  
+      });
+    }
   };
 
   // attach HTML UI elements to RNBO device parameters 
