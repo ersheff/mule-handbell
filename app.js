@@ -58,14 +58,14 @@ const setup = async () => {
   device.node.connect(context.destination);
 
   // start audio with a button
-  document.getElementById("start-button").onpointerdown = async (e) => {
+  document.getElementById("start-button").onpointerdown = (e) => {
     context.resume();
     e.target.disabled = true;
 
-    console.log("start button pressed 5");
+    console.log("start button pressed 7");
 
     if (typeof DeviceMotionEvent.requestPermission === "function") {
-      await DeviceMotionEvent.requestPermission().then(response => {
+      DeviceMotionEvent.requestPermission().then(async (response) => {
         if (response === "granted") {
           console.log("granted!");
           window.addEventListener("devicemotion", (event) => {
