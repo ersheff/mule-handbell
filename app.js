@@ -75,10 +75,6 @@ const setup = async () => {
     device.scheduleEvent(midiNote);
     device.scheduleEvent(velocity);
   }
-
-  function value_limit(val, min, max) {
-    return val < min ? min : (val > max ? max : val);
-  }
   
 };
 
@@ -129,6 +125,10 @@ document.getElementById("start-accel").addEventListener("click", async () => {
     });
   }
 
+  function value_limit(val, min, max) {
+    return val < min ? min : (val > max ? max : val);
+  }
+  
 });
 
 /*
