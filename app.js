@@ -52,57 +52,11 @@ const setup = async () => {
   // connect device to AudioContext audio output
   device.node.connect(context.destination);
 
-  document.getElementById("start-button").addEventListener("click", async () => {
-    context.resume();
-    document.getElementById("start-button").disabled = true;
-
-    if (typeof DeviceMotionEvent.requestPermission === "function") {
-      DeviceMotionEvent.requestPermission().then(response => {
-        if (response === "granted") {
-          window.addEventListener("devicemotion", (event) => {
-            let x = Math.abs(event.acceleration.x);
-            let lastX = smoothX;
-            smoothX = (lastX*0.75)+(x*0.25);
-            xSmoothOutput.innerText = smoothX.toFixed(2);
-            let xDiff = smoothX-lastX;
-            if (xDiff > xThresh && debounceTimer <= 0) {
-              let rawVel = value_limit(xDiff, 2, 6);
-              velocityTrigger = rawVel*0.15+0.1;
-              if (pitch == "B2" || pitch == "B3") {
-                color = "red";
-              }
-              else if (pitch == "C4") {
-                color = "pink";
-              }
-              else if (pitch == "D4") {
-                color = "orange";
-              }
-              else if (pitch == "D#4") {
-                color = "green";
-              }
-              else if (pitch == "F#4") {
-                color = "yellow";
-              }
-              else color = "red";
-              document.body.style.backgroundColor = color;
-              triggerNote(pitch, velocityTrigger);
-              debounceTimer = debounceAmount;
-              xDiffOutput.innerText = velocityTrigger.toFixed(2);
-            }
-            if (debounceTimer-- <= 0) {
-              debounceTimer = 0;
-              document.body.style.backgroundColor = "black";
-            }
-          });
-        }
-      });
-    }
-  });
   // start audio with a button
-  /*document.getElementById("start-button").onpointerdown = (e) => {
+  document.getElementById("start-audio").onpointerdown = (e) => {
     context.resume();
     e.target.disabled = true;
-  };*/
+  };
 
   //
 
@@ -127,6 +81,52 @@ const setup = async () => {
   }
   
 };
+
+document.getElementById("start-accel").addEventListener("click", async () => {
+  document.getElementById("start-accel").disabled = true;
+
+  if (typeof DeviceMotionEvent.requestPermission === "function") {
+    DeviceMotionEvent.requestPermission().then(response => {
+      if (response === "granted") {
+        window.addEventListener("devicemotion", (event) => {
+          let x = Math.abs(event.acceleration.x);
+          let lastX = smoothX;
+          smoothX = (lastX*0.75)+(x*0.25);
+          xSmoothOutput.innerText = smoothX.toFixed(2);
+          let xDiff = smoothX-lastX;
+          if (xDiff > xThresh && debounceTimer <= 0) {
+            let rawVel = value_limit(xDiff, 2, 6);
+            velocityTrigger = rawVel*0.15+0.1;
+            if (pitch == "B2" || pitch == "B3") {
+              color = "red";
+            }
+            else if (pitch == "C4") {
+              color = "pink";
+            }
+            else if (pitch == "D4") {
+              color = "orange";
+            }
+            else if (pitch == "D#4") {
+              color = "green";
+            }
+            else if (pitch == "F#4") {
+              color = "yellow";
+            }
+            else color = "red";
+            document.body.style.backgroundColor = color;
+            triggerNote(pitch, velocityTrigger);
+            debounceTimer = debounceAmount;
+            xDiffOutput.innerText = velocityTrigger.toFixed(2);
+          }
+          if (debounceTimer-- <= 0) {
+            debounceTimer = 0;
+            document.body.style.backgroundColor = "black";
+          }
+        });
+      }
+    });
+  }
+});
 
 setup();
 
