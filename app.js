@@ -3,8 +3,8 @@ let pitchButtons = document.querySelectorAll(".pitch-button");
 let eventThreshold = 10;
 let eventMax = 30;
 
-let debounceTimer = 50;
-let debounceAmount = 50;
+let debounceTimer = 20;
+let debounceAmount = 20;
 
 let diffX = 0;
 let lastX = 0;
