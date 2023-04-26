@@ -1,3 +1,25 @@
+let xSmoothOutput = document.getElementById("x-smooth-output");
+let xDiffOutput = document.getElementById("x-diff-output");
+
+let pitchButtons = document.querySelectorAll(".pitch-button");
+
+let smoothX = 0;
+let xThresh = 2.2;
+let debounceTimer = 20;
+let debounceAmount = 20;
+
+let pitch = 74;
+let velocityTrigger = 127;
+
+let color = "red";
+
+pitchButtons.forEach(button => button.addEventListener("click", () => {
+  let currentlyActive = document.querySelector(".active-pitch");
+  currentlyActive.classList.remove("active-pitch");
+  button.classList.add("active-pitch");
+  pitch = button.value;
+}));
+
 const setup = async () => {
 
   // create WebAudio AudioContext
@@ -38,15 +60,172 @@ const setup = async () => {
 
   //
 
+  if (typeof DeviceMotionEvent.requestPermission === "function") {
+    DeviceMotionEvent.requestPermission().then(response => {
+      if (response === "granted") {
+
+        window.addEventListener("devicemotion", (event) => {
+          let x = Math.abs(event.acceleration.x);
+          let lastX = smoothX;
+          smoothX = (lastX*0.75)+(x*0.25);
+          xSmoothOutput.innerText = smoothX.toFixed(2);
+
+          let xDiff = smoothX-lastX;
+
+          if (xDiff > xThresh && debounceTimer <= 0) {
+            let rawVel = value_limit(xDiff, 2, 6);
+            velocityTrigger = rawVel*0.15+0.1;
+            if (pitch == "B2" || pitch == "B3") {
+              color = "red";
+            }
+            else if (pitch == "C4") {
+              color = "pink";
+            }
+            else if (pitch == "D4") {
+              color = "orange";
+            }
+            else if (pitch == "D#4") {
+              color = "green";
+            }
+            else if (pitch == "F#4") {
+              color = "yellow";
+            }
+            else color = "red";
+            document.body.style.backgroundColor = color;
+            triggerNote(pitch, velocityTrigger);
+            debounceTimer = debounceAmount;
+            xDiffOutput.innerText = velocityTrigger.toFixed(2);
+          }
+
+          if (debounceTimer-- <= 0) {
+            debounceTimer = 0;
+            document.body.style.backgroundColor = "black";
+          }
+
+        });
+      }
+    });
+  }
+
   // attach HTML UI elements to RNBO device parameters 
   document.getElementById("test-button").onclick = (e) => {
-    const midiNote = new MessageEvent(TimeNow, "in2", [ 73 ]);
-    const velocity = new MessageEvent(TimeNow, "in1", [ 127 ]);
+    const midiNote = new MessageEvent(TimeNow, "in2", [ pitch ]);
+    const velocity = new MessageEvent(TimeNow, "in1", [ velocityTrigger ]);
     device.scheduleEvent(midiNote);
     device.scheduleEvent(velocity);
   };
 
+  function triggerNote(p, v) {
+    const midiNote = new MessageEvent(TimeNow, "in2", [ p ]);
+    const velocity = new MessageEvent(TimeNow, "in1", [ v ]);
+    device.scheduleEvent(midiNote);
+    device.scheduleEvent(velocity);
+  }
+
+  function value_limit(val, min, max) {
+    return val < min ? min : (val > max ? max : val);
+  }
   
 };
 
 setup();
+
+/*
+
+
+startButton.addEventListener("click", async () => {
+
+  startButton.style.display = "none";
+
+  if (typeof DeviceMotionEvent.requestPermission === "function") {
+    DeviceMotionEvent.requestPermission().then(response => {
+      if (response === "granted") {
+
+        window.addEventListener("devicemotion", (event) => {
+          let x = Math.abs(event.acceleration.x);
+          let lastX = smoothX;
+          smoothX = (lastX*0.75)+(x*0.25);
+          xSmoothOutput.innerText = smoothX.toFixed(2);
+
+          let xDiff = smoothX-lastX;
+
+          if (xDiff > xThresh && debounceTimer <= 0) {
+            let rawVel = value_limit(xDiff, 2, 6);
+            velocity = rawVel*0.15+0.1;
+            if (pitch == "B2" || pitch == "B3") {
+              color = "red";
+            }
+            else if (pitch == "C4") {
+              color = "pink";
+            }
+            else if (pitch == "D4") {
+              color = "orange";
+            }
+            else if (pitch == "D#4") {
+              color = "green";
+            }
+            else if (pitch == "F#4") {
+              color = "yellow";
+            }
+            else color = "red";
+            document.body.style.backgroundColor = color;
+            debounceTimer = debounceAmount;
+            xDiffOutput.innerText = velocity.toFixed(2);
+          }
+
+          if (debounceTimer-- <= 0) {
+            debounceTimer = 0;
+            document.body.style.backgroundColor = "black";
+          }
+
+        });
+      }
+    });
+  }
+  else {
+    window.addEventListener("devicemotion", (event) => {
+      let x = Math.abs(event.acceleration.x);
+      let lastX = smoothX;
+      smoothX = (lastX*0.75)+(x*0.25);
+      xSmoothOutput.innerText = smoothX.toFixed(2);
+
+      let xDiff = smoothX-lastX;
+
+      if (xDiff > xThresh && debounceTimer <= 0) {
+        let rawVel = value_limit(xDiff, 2, 6);
+        velocity = rawVel*0.15+0.1;
+        if (pitch == "B2" || pitch == "B3") {
+          color = "red";
+        }
+        else if (pitch == "C4") {
+          color = "pink";
+        }
+        else if (pitch == "D4") {
+          color = "orange";
+        }
+        else if (pitch == "D#4") {
+          color = "green";
+        }
+        else if (pitch == "F#4") {
+          color = "yellow";
+        }
+        else color = "red";
+        document.body.style.backgroundColor = color;
+        debounceTimer = debounceAmount;
+        xDiffOutput.innerText = valocity.toFixed(2);
+      }
+
+      if (debounceTimer-- <= 0) {
+        debounceTimer = 0;
+        document.body.style.backgroundColor = "black";
+      }
+
+    });
+  }
+
+});
+
+function value_limit(val, min, max) {
+  return val < min ? min : (val > max ? max : val);
+}
+*/
