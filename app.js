@@ -6,6 +6,7 @@ let eventMax = 5;
 let debounceTimer = 20;
 let debounceAmount = 20;
 
+let diffX = 0;
 let lastX = 0;
 let lastDiffX = 0;
 
@@ -16,7 +17,6 @@ let pitch = 74;
 let velocityTrigger = 127;
 
 let color = "blue";
-
 
 pitchButtons.forEach(button => button.addEventListener("click", () => {
   let currentlyActive = document.querySelector(".active-pitch");
@@ -58,68 +58,10 @@ const setup = async () => {
   device.node.connect(context.destination);
 
   // start audio with a button
-  document.getElementById("start-button").onpointerdown = (e) => {
+  document.getElementById("start-audio").onpointerdown = (e) => {
     context.resume();
     e.target.disabled = true;
-
-    console.log("start button pressed 7");
-
-    if (typeof DeviceMotionEvent.requestPermission === "function") {
-      DeviceMotionEvent.requestPermission().then(async (response) => {
-        if (response === "granted") {
-          console.log("granted!");
-          window.addEventListener("devicemotion", (event) => {
-            let smoothX = event.acceleration.x*0.15 + lastX*0.85;
-            let diffX = smoothX - lastX;
-
-            console.log(diffX);
-    
-            if (diffX > eventThreshold && diffX < lastDiffX && debounceTimer >= debounceAmount) {
-              //let rawVel = value_limit(diffX, eventThreshold, eventMax);
-              velocityTrigger = 127;
-              if (pitch == "B2" || pitch == "B3") {
-                color = "red";
-              }
-              else if (pitch == "C4") {
-                color = "pink";
-              }
-              else if (pitch == "D4") {
-                color = "orange";
-              }
-              else if (pitch == "D#4") {
-                color = "green";
-              }
-              else if (pitch == "F#4") {
-                color = "yellow";
-              }
-              else color = "red";
-              document.body.style.backgroundColor = color;
-              triggerNote(pitch, velocityTrigger);
-              debounceTimer = 0;
-            }
-  
-            if (debounceTimer++ >= debounceAmount) {
-              debounceTimer = debounceAmount;
-              document.body.style.backgroundColor = "black";
-            }
-
-            lastX = smoothX;
-            lastDiffX = diffX;
-  
-          });
-        }
-      });
-    }
-  };
-
-  // attach HTML UI elements to RNBO device parameters 
-  document.getElementById("test-button").onclick = (e) => {
-    const midiNote = new MessageEvent(TimeNow, "in2", [ pitch ]);
-    const velocity = new MessageEvent(TimeNow, "in1", [ velocityTrigger ]);
-    device.scheduleEvent(midiNote);
-    device.scheduleEvent(velocity);
-  };
-
+  }
   function triggerNote(p, v) {
     console.log(`triggering note: ${p} at velocity: ${v}`);
     const midiNote = new MessageEvent(TimeNow, "in2", [ p ]);
@@ -127,14 +69,65 @@ const setup = async () => {
     device.scheduleEvent(midiNote);
     device.scheduleEvent(velocity);
   }
-  
+
   function value_limit(val, min, max) {
     return val < min ? min : (val > max ? max : val);
   }
   
 };
 
+
 setup();
+
+
+document.getElementById("start-accel").addEventListener("click", async () => {
+  if (typeof DeviceMotionEvent.requestPermission === "function") {
+    DeviceMotionEvent.requestPermission().then(async (response) => {
+      if (response === "granted") {
+        console.log("granted!");
+        window.addEventListener("devicemotion", (event) => {
+          let smoothX = event.acceleration.x*0.15 + lastX*0.85;
+          diffX = smoothX - lastX;
+
+          console.log(diffX);
+
+          /*if (diffX > eventThreshold && diffX < lastDiffX && debounceTimer >= debounceAmount) {
+            //let rawVel = value_limit(diffX, eventThreshold, eventMax);
+            velocityTrigger = 127;
+            if (pitch == "B2" || pitch == "B3") {
+              color = "red";
+            }
+            else if (pitch == "C4") {
+              color = "pink";
+            }
+            else if (pitch == "D4") {
+              color = "orange";
+            }
+            else if (pitch == "D#4") {
+              color = "green";
+            }
+            else if (pitch == "F#4") {
+              color = "yellow";
+            }
+            else color = "red";
+            document.body.style.backgroundColor = color;
+            triggerNote(pitch, velocityTrigger);
+            debounceTimer = 0;
+          }
+
+          if (debounceTimer++ >= debounceAmount) {
+            debounceTimer = debounceAmount;
+            document.body.style.backgroundColor = "black";
+          }*/
+
+          lastX = smoothX;
+          lastDiffX = diffX;
+
+        });
+      }
+    });
+  }
+});
 
 /*
 
