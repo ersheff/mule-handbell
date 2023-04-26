@@ -63,8 +63,6 @@ const setup = async () => {
     e.target.disabled = true;
   }
 
-  console.log(diffX);
-
   document.getElementById("start-accel").addEventListener("click", async () => {
     if (typeof DeviceMotionEvent.requestPermission === "function") {
       DeviceMotionEvent.requestPermission().then(async (response) => {
@@ -74,6 +72,9 @@ const setup = async () => {
           window.addEventListener("devicemotion", (event) => {
             let smoothX = event.acceleration.x*0.15 + lastX*0.85;
             diffX = smoothX - lastX;
+
+            console.log(diffX);
+
             lastX = smoothX;
             lastDiffX = diffX;
   
