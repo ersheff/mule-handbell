@@ -65,6 +65,24 @@ const setup = async () => {
 
   console.log(diffX);
 
+  document.getElementById("start-accel").addEventListener("click", async () => {
+    if (typeof DeviceMotionEvent.requestPermission === "function") {
+      DeviceMotionEvent.requestPermission().then(async (response) => {
+        if (response === "granted") {
+          document.getElementById("start-accel").disabled = true;
+          console.log("granted!");
+          window.addEventListener("devicemotion", (event) => {
+            let smoothX = event.acceleration.x*0.15 + lastX*0.85;
+            diffX = smoothX - lastX;
+            lastX = smoothX;
+            lastDiffX = diffX;
+  
+          });
+        }
+      });
+    }
+  });
+
 
   if (diffX > eventThreshold && diffX < lastDiffX && debounceTimer >= debounceAmount) {
   //let rawVel = value_limit(diffX, eventThreshold, eventMax);
@@ -112,24 +130,6 @@ const setup = async () => {
 
 setup();
 
-
-document.getElementById("start-accel").addEventListener("click", async () => {
-  if (typeof DeviceMotionEvent.requestPermission === "function") {
-    DeviceMotionEvent.requestPermission().then(async (response) => {
-      if (response === "granted") {
-        document.getElementById("start-accel").disabled = true;
-        console.log("granted!");
-        window.addEventListener("devicemotion", (event) => {
-          let smoothX = event.acceleration.x*0.15 + lastX*0.85;
-          diffX = smoothX - lastX;
-          lastX = smoothX;
-          lastDiffX = diffX;
-
-        });
-      }
-    });
-  }
-});
 
 /*
 
